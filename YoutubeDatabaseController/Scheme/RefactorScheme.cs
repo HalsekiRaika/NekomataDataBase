@@ -10,7 +10,7 @@ namespace YoutubeDatabaseController.Scheme {
         [JsonProperty("ChannelName")]
         public string ChannelName { get; set; }
         [JsonProperty("PublishTime")]
-        public DateTimeOffset Publish { get; set; }
+        public string Publish { get; set; }
         [JsonProperty("ThumbnailUrl")]
         public ThumbnailsData Thumbnail { get; set; } 
     }
@@ -18,5 +18,11 @@ namespace YoutubeDatabaseController.Scheme {
     public partial class ThumbnailsData {
         [JsonProperty("ThumbnailImage")]
         public Uri Url { get; set; }
+        
+        [JsonProperty("width")]
+        public string Width { get; set; }
+
+        [JsonProperty("height")]
+        public string Height { get; set; }
     }
 }

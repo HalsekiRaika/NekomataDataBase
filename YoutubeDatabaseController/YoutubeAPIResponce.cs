@@ -13,6 +13,8 @@ namespace YoutubeDatabaseController {
             Uri url = new Uri("https://www.googleapis.com/youtube/v3/search")
                 .AddQuery("part", "snippet")
                 .AddQuery("channelId", channelId)
+                .AddQuery("type", "video")
+                .AddQuery("eventType", "upcoming")
                 .AddQuery("key", getToken());
             AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString());
             string result = await client.GetStringAsync(url);

@@ -11,8 +11,12 @@ namespace YoutubeDatabaseController {
                     Title         = t.Snippet.Title,
                     Description   = t.Snippet.Description,
                     ChannelName   = t.Snippet.ChannelTitle,
-                    Thumbnail = new ThumbnailsData() { Url = t.Snippet.Thumbnails.Default.Url },
-                    Publish       = t.Snippet.PublishTime,
+                    Thumbnail     = new ThumbnailsData() {
+                        Url       = t.Snippet.Thumbnails.Default.Url,
+                        Height    = t.Snippet.Thumbnails.Default.Height.ToString(),
+                        Width     = t.Snippet.Thumbnails.Default.Width.ToString()
+                    },
+                    Publish       = t.Snippet.PublishTime.ToString(),
                 };
                 _schemes.Add(refactorScheme);
             }

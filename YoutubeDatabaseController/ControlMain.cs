@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
 using Newtonsoft.Json;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -12,13 +14,14 @@ using YoutubeDatabaseController.Util;
 namespace YoutubeDatabaseController {
     public class ControlMain {
         private static List<string> serializedObject = new List<string>();
+        private static MongoClient _mongoClient;
         static void Main(string[] args) {
             Console.WriteLine(Settings.StartupMessage);
 
             if (EnvironmentCheck.IsLinux()) {
-                MongoClient mongoClient = new MongoClient("mongodb://124.0.0.1");
+                _mongoClient = new MongoClient("mongodb://124.0.0.1");
             } else {
-                MongoClient mongoClient = new MongoClient("mongodb://192.168.0.5");
+                _mongoClient = new MongoClient("mongodb://192.168.0.5");
             }
             
             HttpClient httpClient = new HttpClient();
@@ -42,6 +45,20 @@ namespace YoutubeDatabaseController {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
             });
             serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
+            
+            //DB Insert
+            IMongoDatabase database = _mongoClient.GetDatabase("TestCollection");
+            IMongoCollection<RefactorScheme> collection = database.GetCollection<RefactorScheme>("upcoming");
+            database.DropCollection("upcoming");
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
+            SchemeRefactor.getSchemes().ForEach(i => {
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをデータベースに送信します。");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"生放送予定枠：{i.Title}");
+                collection.InsertOne(i);
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_COMP, "成功しました。");
+            });
+            
+            Console.WriteLine("Enter your key...");
             Console.ReadKey();
         }
     }
