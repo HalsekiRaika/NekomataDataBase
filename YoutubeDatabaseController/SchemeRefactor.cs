@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
+using YoutubeDatabaseController.Scheme.LogScheme;
+using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public class SchemeRefactor {
         private static List<RefactorScheme> _schemes = new List<RefactorScheme>();
         public static void Modification(Item[] targetArray) {
             foreach (Item t in targetArray) {
+                //Chcker
                 RefactorScheme refactorScheme = new RefactorScheme() {
                     Title         = t.Snippet.Title,
                     Description   = t.Snippet.Description,
@@ -18,7 +21,12 @@ namespace YoutubeDatabaseController {
                     },
                     Publish       = t.Snippet.PublishTime.ToString(),
                 };
-                _schemes.Add(refactorScheme);
+                if (!LiveCheck.IsFreeChat(t)) {
+                    _schemes.Add(refactorScheme);
+                } else {
+                    AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "フリーチャット専用枠を検出し、除外しました。");
+                    AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, $"対象：{t.Snippet.Title}");
+                }
             }
         }
 

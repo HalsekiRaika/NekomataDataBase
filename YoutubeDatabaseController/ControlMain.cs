@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Operations;
 using Newtonsoft.Json;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -13,25 +11,36 @@ using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public class ControlMain {
+        private static List<string> _resultList = new List<string>();
         private static List<string> serializedObject = new List<string>();
+        private static List<JsonScheme> _schemeList = new List<JsonScheme>();
         private static MongoClient _mongoClient;
         static void Main(string[] args) {
+            AlConsole.RunTestMessage();
             Console.WriteLine(Settings.StartupMessage);
 
-            if (EnvironmentCheck.IsLinux()) {
-                _mongoClient = new MongoClient("mongodb://124.0.0.1");
-            } else {
-                _mongoClient = new MongoClient("mongodb://192.168.0.5");
-            }
+            _mongoClient = EnvironmentCheck.IsLinux()
+                ? new MongoClient("mongodb://124.0.0.1")
+                : new MongoClient("mongodb://192.168.0.5");
             
             HttpClient httpClient = new HttpClient();
-            string channelId = Console.ReadLine();
-            string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
+            ChannelIDList.GetChannelId().ForEach(channelId => {
+                string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
+                _resultList.Add(result);
+            });
+            
             AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
-            Console.WriteLine(result);
-            JsonScheme scheme = new JsonScheme();
-            scheme = JsonConvert.DeserializeObject<JsonScheme>(result);
-            SchemeRefactor.Modification(scheme.Items);
+
+            _resultList.ForEach(result => {
+                JsonScheme scheme = new JsonScheme();
+                scheme = JsonConvert.DeserializeObject<JsonScheme>(result);
+                _schemeList.Add(scheme);
+            });
+            
+            _schemeList.ForEach(schemes => {
+                SchemeRefactor.Modification(schemes.Items);
+            });
+            
             SchemeRefactor.getSchemes().ForEach(i => {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Title);
@@ -41,9 +50,11 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Thumbnail.Url.ToString());
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
             });
+            
             SchemeRefactor.getSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
             });
+            
             serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
             
             //DB Insert
