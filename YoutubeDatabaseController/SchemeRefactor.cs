@@ -14,6 +14,7 @@ namespace YoutubeDatabaseController {
                     Title         = t.Snippet.Title,
                     Description   = t.Snippet.Description,
                     ChannelName   = t.Snippet.ChannelTitle,
+                    ChannelId     = t.Snippet.ChannelId,
                     Thumbnail     = new ThumbnailsData() {
                         Url       = t.Snippet.Thumbnails.Default.Url,
                         Height    = t.Snippet.Thumbnails.Default.Height.ToString(),
