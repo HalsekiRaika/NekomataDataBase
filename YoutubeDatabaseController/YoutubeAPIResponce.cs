@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme.LogScheme;
+using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public class YoutubeAPIResponce {
@@ -22,7 +23,9 @@ namespace YoutubeDatabaseController {
         }
 
         public static string getToken() {
-            StreamReader reader = new StreamReader("C:\\Token\\YoutubeAPIToken.txt");
+            StreamReader reader = EnvironmentCheck.IsLinux()
+                ? new StreamReader("/home/ubuntu")
+                : new StreamReader("C:\\Token\\YoutubeAPIToken.txt");
             return reader.ReadToEnd();
         }
     }

@@ -41,7 +41,7 @@ namespace YoutubeDatabaseController {
                 SchemeRefactor.Modification(schemes.Items);
             });
             
-            SchemeRefactor.getSchemes().ForEach(i => {
+            SchemeRefactor.GetSchemes().ForEach(i => {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Title);
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Description);
@@ -51,7 +51,7 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
             });
             
-            SchemeRefactor.getSchemes().ForEach(i => {
+            SchemeRefactor.GetSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
             });
             
@@ -62,7 +62,7 @@ namespace YoutubeDatabaseController {
             IMongoCollection<RefactorScheme> collection = database.GetCollection<RefactorScheme>("upcoming");
             database.DropCollection("upcoming");
             AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
-            SchemeRefactor.getSchemes().ForEach(i => {
+            SchemeRefactor.GetSchemes().ForEach(i => {
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをデータベースに送信します。");
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"生放送予定枠：{i.Title}");
                 collection.InsertOne(i);

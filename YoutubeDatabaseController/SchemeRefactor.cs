@@ -31,7 +31,7 @@ namespace YoutubeDatabaseController {
             }
         }
 
-        public static List<RefactorScheme> getSchemes() {
+        public static List<RefactorScheme> GetSchemes() {
             return _schemes;
         }
     }
