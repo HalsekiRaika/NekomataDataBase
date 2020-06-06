@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace YoutubeDatabaseController {
     public class Settings {
@@ -9,5 +10,11 @@ namespace YoutubeDatabaseController {
             "Tool was Created By ReiRokusanami\n" +
             "-----------------------------------------------\n";
 
+        // Production Names
+        public static readonly string HoloLive = "Hololive";
+        public static readonly string NijiSanji = "Nijisanji";
+        public static readonly string AniMare = "Animare";
+
     }
+    
 }

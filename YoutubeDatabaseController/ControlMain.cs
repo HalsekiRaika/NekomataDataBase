@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
+using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using YoutubeDatabaseController.Scheme;
@@ -16,7 +17,6 @@ namespace YoutubeDatabaseController {
         private static List<JsonScheme> _schemeList = new List<JsonScheme>();
         private static MongoClient _mongoClient;
         static void Main(string[] args) {
-            AlConsole.RunTestMessage();
             Console.WriteLine(Settings.StartupMessage);
 
             _mongoClient = EnvironmentCheck.IsLinux()
@@ -69,8 +69,8 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_COMP, "成功しました。");
             });
             
-            Console.WriteLine("Enter your key...");
-            Console.ReadKey();
+            AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Task Finished !");
+            AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Have a good live broadcast today !");
         }
     }
 }
