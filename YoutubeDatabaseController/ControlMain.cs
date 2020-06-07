@@ -57,6 +57,9 @@ namespace YoutubeDatabaseController {
             
             serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
             
+            DataBaseCollection.Insert(_mongoClient, SchemeRefactor.GetSchemes());
+            
+            /*
             //DB Insert
             IMongoDatabase database = _mongoClient.GetDatabase("TestCollection");
             IMongoCollection<RefactorScheme> collection = database.GetCollection<RefactorScheme>("upcoming");
@@ -68,6 +71,7 @@ namespace YoutubeDatabaseController {
                 collection.InsertOne(i);
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_COMP, "成功しました。");
             });
+            */
             
             AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Task Finished !");
             AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Have a good live broadcast today !");

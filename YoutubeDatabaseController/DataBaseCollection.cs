@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Log5RLibs.Services;
 using MongoDB.Driver;
 using YoutubeDatabaseController.ChannelDictionary;
 using YoutubeDatabaseController.Scheme;
+using YoutubeDatabaseController.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController {
     public class DataBaseCollection {
         public static void Insert(MongoClient client, List<RefactorScheme> schemeList) {
             
             // Production DataBase
-            IMongoDatabase databaseHololive  = client.GetDatabase(Settings.HoloLive);
-            IMongoDatabase databaseNijisanji = client.GetDatabase(Settings.NijiSanji);
+            IMongoDatabase databaseHololive  = client.GetDatabase(Settings.Hololive);
+            IMongoDatabase databaseNijisanji = client.GetDatabase(Settings.Nijisanji);
             IMongoDatabase databaseAnimare   = client.GetDatabase(Settings.AniMare);
             
             // HoloLive Channel Collection
@@ -67,12 +70,33 @@ namespace YoutubeDatabaseController {
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.HimemoriLuna);
             IMongoCollection<RefactorScheme> collectionMikoChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.SakuraMiko);
-            IMongoCollection<RefactorScheme> collectionAZKiChannel =
+            IMongoCollection<RefactorScheme> collectionAZKiChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.AZKi);
             // ==== HoloLive Collection End Line ===
             
+            // Start Initialization
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化を開始します。");
+            
+            ProductionHoloLive.GetAllValue().ForEach(init => Initialization(databaseHololive, init));
+
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"全ての初期化が終了しました。");
+            
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
+            
+            // Start Insert Data
+            
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをコレクションに格納します。");
             schemeList.ForEach(schemes => {
-                string searchedObject = ProductionHoloLive.GetChannelId(schemes.ChannelId);
+                string searchedObject = ProductionHoloLive.GetChannelName(schemes.ChannelId);
+                
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをコレクションに格納します。");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"生放送予定枠：");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => タイトル　　  ：{schemes.Title}");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネル名  ：{schemes.ChannelName}");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネルID　：{schemes.ChannelId}");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"\n ");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ================================================ ");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"\n ");
                 
                 if (ProductionHoloLive.NatsuiroMatsuri         == searchedObject) {
                     collectionMatsuriChannel.InsertOne(schemes);
@@ -133,9 +157,16 @@ namespace YoutubeDatabaseController {
                 }
 
             });
-            
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_COMP, "全ての挿入が成功しました。");
         }
-        
+
+        private static void Initialization(IMongoDatabase db, string targetCollection) {
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"対象のコレクションを初期化します。");
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"Collection: {targetCollection}");
+            db.DropCollection(targetCollection);
+            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
+        }
+
     }
     
 }

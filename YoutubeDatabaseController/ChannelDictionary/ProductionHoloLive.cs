@@ -65,7 +65,15 @@ namespace YoutubeDatabaseController.ChannelDictionary {
             {"UC0TXe_LYZ4scaW2XMyi5_kw",            AZKi},
         };
 
-        public static string GetChannelId(string channelId) {
+        public static List<string> GetAllValue() {
+            List<string> buf = new List<string>();
+            foreach (KeyValuePair<string, string> item in IdDict) {
+                buf.Add(item.Value);
+            }
+            return buf;
+        }
+        
+        public static string GetChannelName(string channelId) {
             return IdDict[channelId];
         }
     }

@@ -11,8 +11,8 @@ namespace YoutubeDatabaseController {
             "-----------------------------------------------\n";
 
         // Production Names
-        public static readonly string HoloLive = "Hololive";
-        public static readonly string NijiSanji = "Nijisanji";
+        public static readonly string Hololive = "Hololive";
+        public static readonly string Nijisanji = "Nijisanji";
         public static readonly string AniMare = "Animare";
 
     }
