@@ -94,9 +94,9 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => タイトル　　  ：{schemes.Title}");
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネル名  ：{schemes.ChannelName}");
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネルID　：{schemes.ChannelId}");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"\n ");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ================================================ ");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"\n ");
+                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
                 
                 if (ProductionHoloLive.NatsuiroMatsuri         == searchedObject) {
                     collectionMatsuriChannel.InsertOne(schemes);
