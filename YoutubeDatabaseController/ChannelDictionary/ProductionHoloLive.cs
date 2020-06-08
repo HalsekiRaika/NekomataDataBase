@@ -23,7 +23,7 @@ namespace YoutubeDatabaseController.ChannelDictionary {
         public static readonly string YozoraMel        = "MelChannel";
         public static readonly string Roboco           = "RobocoChannel";
         public static readonly string TokinoSora       = "SoraChannel";
-        public static readonly string SirakamiFubuki   = "FubukiChannel";
+        public static readonly string ShirakamiFubuki   = "FubukiChannel";
         public static readonly string OokamiMio        = "MioChannel";
         public static readonly string MurasakiShion    = "ShionChannel";
         public static readonly string AmaneKanata      = "KanataChannel";
@@ -54,7 +54,7 @@ namespace YoutubeDatabaseController.ChannelDictionary {
             {"UCD8HOxPs4Xvsm8H0ZxXGiBw",       YozoraMel},
             {"UCDqI2jOz0weumE8s7paEk6g",          Roboco},
             {"UCp6993wxpyDPHUpavwDFqgg",      TokinoSora},
-            {"UCdn5BQ06XqgXoAxIhbqw5Rg",  SirakamiFubuki},
+            {"UCdn5BQ06XqgXoAxIhbqw5Rg", ShirakamiFubuki},
             {"UCp-5t9SrOQwXMU7iIjQfARg",       OokamiMio},
             {"UCXTpFs_3PqI41qX2d9tL2Rw",   MurasakiShion},
             {"UCZlDXzGoo7d44bwdNObFacg",     AmaneKanata},
