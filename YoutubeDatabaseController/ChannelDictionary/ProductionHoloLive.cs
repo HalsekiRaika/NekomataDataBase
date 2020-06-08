@@ -10,7 +10,7 @@ namespace YoutubeDatabaseController.ChannelDictionary {
         public static readonly string AkaiHaato        = "HaatoChannel";
         public static readonly string NakiriAyame      = "NakiriChannel";
         public static readonly string InugamiKorone    = "KoroneChannel";
-        public static readonly string SiranuiFlare     = "FlareChannel";
+        public static readonly string ShiranuiFlare    = "FlareChannel";
         public static readonly string TokoyamiTowa     = "TowaChannel";
         public static readonly string UsadaPekora      = "PekoraChannel";
         public static readonly string MinatoAqua       = "AquaChannel";
@@ -41,7 +41,7 @@ namespace YoutubeDatabaseController.ChannelDictionary {
             {"UC1CfXB_kRs3C-zaeTG3oGyg",       AkaiHaato},
             {"UC7fk0CB07ly8oSl0aqKkqFg",     NakiriAyame},
             {"UChAnqc_AY5_I3Px5dig3X1Q",   InugamiKorone},
-            {"UCvInZx9h3jC2JzsIzoOebWg",    SiranuiFlare},
+            {"UCvInZx9h3jC2JzsIzoOebWg",   ShiranuiFlare},
             {"UC1uv2Oq6kNxgATlCiez59hw",    TokoyamiTowa},
             {"UC1DCedRgGHBdm81E1llLhOQ",     UsadaPekora},
             {"UC1opHUrw8rvnsadT-iGp7Cg",      MinatoAqua},
