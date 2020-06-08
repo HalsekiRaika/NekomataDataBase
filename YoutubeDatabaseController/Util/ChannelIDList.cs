@@ -29,6 +29,7 @@ namespace YoutubeDatabaseController.Util {
             "UCXTpFs_3PqI41qX2d9tL2Rw", //Shion Ch. 紫咲シオン
             "UCZlDXzGoo7d44bwdNObFacg", //Kanata Ch. 天音かなた
             "UC1suqwovbL1kzsoaZgFZLKg", //Choco Ch. 癒月ちょこ
+            "UCp3tgHXw_HI0QMk1K8qh3gQ", //Choco Ch. 癒月ちょこ Sub
             "UCCzUftO8KOVkV4wQG1vkUvg", //Marine Ch. 宝鐘マリン
             "UCa9Y57gfeY0Zro_noHRVrnw", //Luna Ch. 姫森ルーナ
             "UC-hM6YJuNYVAmUWxeIr9FeA", //Miko Ch. さくらみこ

@@ -16,61 +16,63 @@ namespace YoutubeDatabaseController {
             IMongoDatabase databaseAnimare   = client.GetDatabase(Settings.AniMare);
             
             // HoloLive Channel Collection
-            IMongoCollection<RefactorScheme> collectionMatsuriChannel =
+            IMongoCollection<RefactorScheme> collectionMatsuriChannel  =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NatsuiroMatsuri);
-            IMongoCollection<RefactorScheme> collectionSubaruChannel  = 
+            IMongoCollection<RefactorScheme> collectionSubaruChannel   = 
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.OozoraSubaru);
-            IMongoCollection<RefactorScheme> collectionAkirozeChannel =
+            IMongoCollection<RefactorScheme> collectionAkirozeChannel  =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.Akirosenthal);
-            IMongoCollection<RefactorScheme> collectionHaatoChannel   =
+            IMongoCollection<RefactorScheme> collectionHaatoChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.AkaiHaato);
-            IMongoCollection<RefactorScheme> collectionAyameChannel   =
+            IMongoCollection<RefactorScheme> collectionAyameChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NakiriAyame);
-            IMongoCollection<RefactorScheme> collectionKoroneChannel  =
+            IMongoCollection<RefactorScheme> collectionKoroneChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.InugamiKorone);
-            IMongoCollection<RefactorScheme> collectionFlareChannel   =
+            IMongoCollection<RefactorScheme> collectionFlareChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.ShiranuiFlare);
-            IMongoCollection<RefactorScheme> collectionTowaChannel    =
+            IMongoCollection<RefactorScheme> collectionTowaChannel     = 
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.TokoyamiTowa);
-            IMongoCollection<RefactorScheme> collectionPekoraChannel  =
+            IMongoCollection<RefactorScheme> collectionPekoraChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.UsadaPekora);
-            IMongoCollection<RefactorScheme> collectionAquaChannel    =
+            IMongoCollection<RefactorScheme> collectionAquaChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.MinatoAqua);
-            IMongoCollection<RefactorScheme> collectionCocoChannel    =
+            IMongoCollection<RefactorScheme> collectionCocoChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.KiryuuCoco);
-            IMongoCollection<RefactorScheme> collectionSuiseiChannel  =
+            IMongoCollection<RefactorScheme> collectionSuiseiChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.HoshimachiSuisei);
-            IMongoCollection<RefactorScheme> collectionOkayuChannel   =
+            IMongoCollection<RefactorScheme> collectionOkayuChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NekomataOkayu);
-            IMongoCollection<RefactorScheme> collectionWatameChannel  =
+            IMongoCollection<RefactorScheme> collectionWatameChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.TsunomakiWatame);
-            IMongoCollection<RefactorScheme> collectionRushiaChannel  =
+            IMongoCollection<RefactorScheme> collectionRushiaChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.UruhaRushia);
-            IMongoCollection<RefactorScheme> collectionNoelChannel    =
+            IMongoCollection<RefactorScheme> collectionNoelChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.ShiroganeNoel);
-            IMongoCollection<RefactorScheme> collectionMelChannel     =
+            IMongoCollection<RefactorScheme> collectionMelChannel      =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.YozoraMel);
-            IMongoCollection<RefactorScheme> collectionRobocoChannel  =
+            IMongoCollection<RefactorScheme> collectionRobocoChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.Roboco);
-            IMongoCollection<RefactorScheme> collectionSoraChannel    =
+            IMongoCollection<RefactorScheme> collectionSoraChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.TokinoSora);
-            IMongoCollection<RefactorScheme> collectionFubukiChannel  =
+            IMongoCollection<RefactorScheme> collectionFubukiChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.ShirakamiFubuki);
-            IMongoCollection<RefactorScheme> collectionMioChannel     =
+            IMongoCollection<RefactorScheme> collectionMioChannel      =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.OokamiMio);
-            IMongoCollection<RefactorScheme> collectionShionChannel   =
+            IMongoCollection<RefactorScheme> collectionShionChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.MurasakiShion);
-            IMongoCollection<RefactorScheme> collectionKanataChannel  =
+            IMongoCollection<RefactorScheme> collectionKanataChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.AmaneKanata);
-            IMongoCollection<RefactorScheme> collectionChocoChannel   =
+            IMongoCollection<RefactorScheme> collectionChocoChannel    =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.YuzukiChoco);
-            IMongoCollection<RefactorScheme> collectionMarineChannel  =
+            IMongoCollection<RefactorScheme> collectionChocoSubChannel =
+                databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.YuzukiChocoSub);
+            IMongoCollection<RefactorScheme> collectionMarineChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.HoushouMarine);
-            IMongoCollection<RefactorScheme> collectionLunaChannel    =
+            IMongoCollection<RefactorScheme> collectionLunaChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.HimemoriLuna);
-            IMongoCollection<RefactorScheme> collectionMikoChannel    =
+            IMongoCollection<RefactorScheme> collectionMikoChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.SakuraMiko);
-            IMongoCollection<RefactorScheme> collectionAZKiChannel    =
+            IMongoCollection<RefactorScheme> collectionAZKiChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.AZKi);
             // ==== HoloLive Collection End Line ===
             
@@ -85,7 +87,11 @@ namespace YoutubeDatabaseController {
             
             // Start Insert Data
             
-            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをコレクションに格納します。");
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "回収したデータをコレクションに格納します。");
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ================================================ ");
+            AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
+            
             schemeList.ForEach(schemes => {
                 string searchedObject = ProductionHoloLive.GetChannelName(schemes.ChannelId);
                 
@@ -136,7 +142,7 @@ namespace YoutubeDatabaseController {
                     collectionRobocoChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.TokinoSora       == searchedObject) {
                     collectionSoraChannel.InsertOne(schemes);
-                } else if (ProductionHoloLive.ShirakamiFubuki   == searchedObject) {
+                } else if (ProductionHoloLive.ShirakamiFubuki  == searchedObject) {
                     collectionFubukiChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.OokamiMio        == searchedObject) {
                     collectionMioChannel.InsertOne(schemes);
@@ -146,6 +152,8 @@ namespace YoutubeDatabaseController {
                     collectionKanataChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.YuzukiChoco      == searchedObject) {
                     collectionChocoChannel.InsertOne(schemes);
+                } else if (ProductionHoloLive.YuzukiChocoSub   == searchedObject) {
+                    collectionChocoSubChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.HoushouMarine    == searchedObject) {
                     collectionMarineChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.HimemoriLuna     == searchedObject) {
