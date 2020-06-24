@@ -75,6 +75,14 @@ namespace YoutubeDatabaseController.ChannelDictionary {
             return buf;
         }
         
+        public static List<string> GetAllKey() {
+            List<string> buf = new List<string>();
+            foreach (KeyValuePair<string, string> item in IdDict) {
+                buf.Add(item.Key);
+            }
+            return buf;
+        }
+        
         public static string GetChannelName(string channelId) {
             return IdDict[channelId];
         }
