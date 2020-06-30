@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="RaspberryPi DataBase(MongoDB)" uuid="7c8c492e-93dd-49c3-80e5-4af5bca5b797">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://192.168.0.5:27017/</jdbc-url>
+    </data-source>
+  </component>
+</project>

@@ -13,6 +13,8 @@ namespace YoutubeDatabaseController.Scheme {
         public string ChannelName { get; set; }
         [JsonProperty("PublishTime")]
         public string Publish { get; set; }
+        [JsonProperty("StartTime")]
+        public string StartTime { get; set; }
         [JsonProperty("ThumbnailUrl")]
         public ThumbnailsData Thumbnail { get; set; } 
     }

@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Log5RLibs.Services;
@@ -22,7 +23,19 @@ namespace YoutubeDatabaseController {
             return result;
         }
 
-        public static string getToken() {
+        public static async Task<string> RequestStartTimeAsync(HttpClient client, string[] videoId) {
+            Uri url = new Uri("https://www.googleapis.com/youtube/v3/videos?")
+                .AddQuery("part", "liveStreamingDetails")
+                .AddQuery("key", getToken())
+                .AddArrayQuery("id", videoId);
+            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
+            foreach (string value in videoId) {
+                AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"{value, 15}");
+            }
+            return await client.GetStringAsync(url);
+        }
+
+        private static string getToken() {
             StreamReader reader = EnvironmentCheck.IsLinux()
                 ? new StreamReader("/home/ubuntu")
                 : new StreamReader("C:\\Token\\YoutubeAPIToken.txt");
@@ -38,6 +51,23 @@ namespace YoutubeDatabaseController {
             UriBuilder builtUrl = new UriBuilder(uri);
             builtUrl.Query = collection.ToString();
             return builtUrl.Uri;
+        }
+
+        public static Uri AddArrayQuery(this Uri uri, string key, string[] valueArray) {
+            NameValueCollection collection = HttpUtility.ParseQueryString(uri.Query);
+            collection.Remove(key);
+            collection.Add(key, ArrayToString(valueArray));
+            UriBuilder builtUrl = new UriBuilder(uri);
+            builtUrl.Query = collection.ToString();
+            return builtUrl.Uri;
+        }
+
+        private static string ArrayToString(string[] valueArray) {
+            StringBuilder builder = new StringBuilder();
+            foreach (string valueItem in valueArray) {
+                builder.Append(valueItem + ",");
+            }
+            return builder.ToString();
         }
     }
 }

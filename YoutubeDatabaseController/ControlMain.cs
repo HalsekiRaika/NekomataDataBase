@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
@@ -12,10 +13,20 @@ using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public class ControlMain {
-        private static List<string> _resultList = new List<string>();
-        private static List<string> serializedObject = new List<string>();
-        private static List<JsonScheme> _schemeList = new List<JsonScheme>();
+        
+        //List
+        private static List<string>     _resultList      = new List<string>();
+        private static List<Item>       _willConvertList = new List<Item>();
+        private static List<string>     serializedObject = new List<string>();
+        private static List<JsonScheme> _schemeList      = new List<JsonScheme>();
+        
+        //Dictionary
+        private static Dictionary<string, StartTimeScheme> _schemeExtList   = new Dictionary<string, StartTimeScheme>();
+        private static Dictionary<int, List<string>>       BundledVideoId   = new Dictionary<int, List<string>>();
+        private static Dictionary<JsonScheme, StartTimeScheme> BundledSchemes = new Dictionary<JsonScheme, StartTimeScheme>();
+        
         private static MongoClient _mongoClient;
+        
         static void Main(string[] args) {
             Console.WriteLine(Settings.StartupMessage);
 
@@ -37,27 +48,57 @@ namespace YoutubeDatabaseController {
                 _schemeList.Add(scheme);
             });
             
-            _schemeList.ForEach(schemes => {
-                SchemeRefactor.Modification(schemes.Items);
-            });
+            _resultList.Clear();
             
-            SchemeRefactor.GetSchemes().ForEach(i => {
+            _schemeList.ForEach(schemes => {
+                foreach (Item objItem in schemes.Items) {
+                    _willConvertList.Add(objItem);
+                }
+            });
+
+            BundledVideoId = VideoIdPackager.Bundle(_willConvertList.ToArray());
+
+            foreach (KeyValuePair<int, List<string>> bundledValue in BundledVideoId) {
+                string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, bundledValue.Value.ToArray())).Result;
+                _resultList.Add(startTime);
+            }
+
+            int count = -1;
+            _resultList.ForEach(result => {
+                StartTimeScheme scheme = new StartTimeScheme();
+                scheme = JsonConvert.DeserializeObject<StartTimeScheme>(result);
+                _schemeExtList.Add(scheme.Items[++count].Id, scheme);
+                count++;
+            });
+
+            BundledSchemes = SortMixedData.ToMix(_schemeList, _schemeExtList);
+            
+            SchemeOrthopedy.BundleModification(BundledSchemes);
+            
+            /*
+            _schemeList.ForEach(schemes => {
+                SchemeOrthopedy.Modification(schemes.Items);
+            });
+            */
+            
+            SchemeOrthopedy.GetSchemes().ForEach(i => {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Title);
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Description);
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.ChannelName);
+                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.StartTime.ToString());
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Publish.ToString());
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Thumbnail.Url.ToString());
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
             });
             
-            SchemeRefactor.GetSchemes().ForEach(i => {
+            SchemeOrthopedy.GetSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
             });
             
             serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
             
-            DataBaseCollection.Insert(_mongoClient, SchemeRefactor.GetSchemes());
+            DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());
             
             /*
             //DB Insert
