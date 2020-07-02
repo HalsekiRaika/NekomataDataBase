@@ -7,79 +7,71 @@ using Log5RLibs.Services;
 using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
 using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public class ControlMain {
-        
-        //List
-        private static List<string>     _resultList      = new List<string>();
-        private static List<Item>       _willConvertList = new List<Item>();
         private static List<string>     serializedObject = new List<string>();
-        private static List<JsonScheme> _schemeList      = new List<JsonScheme>();
-        
-        //Dictionary
-        private static Dictionary<string, StartTimeScheme> _schemeExtList   = new Dictionary<string, StartTimeScheme>();
-        private static Dictionary<int, List<string>>       BundledVideoId   = new Dictionary<int, List<string>>();
-        private static Dictionary<JsonScheme, StartTimeScheme> BundledSchemes = new Dictionary<JsonScheme, StartTimeScheme>();
         
         private static MongoClient _mongoClient;
         
         static void Main(string[] args) {
             Console.WriteLine(Settings.StartupMessage);
 
+            // Set Client for Environment (Windows or Linux).
             _mongoClient = EnvironmentCheck.IsLinux()
                 ? new MongoClient("mongodb://124.0.0.1")
                 : new MongoClient("mongodb://192.168.0.5");
             
+            // Set Http Client. (For Reuse)
+            // HttpClient isn't disposable, but is designed to "For Reuse".
             HttpClient httpClient = new HttpClient();
+            
+            // Send Request to YoutubeAPI.
             ChannelIDList.GetChannelId().ForEach(channelId => {
                 string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
-                _resultList.Add(result);
+                ListAggregation.SetResultList(result);
             });
             
+            // Finish Message
             AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
 
-            _resultList.ForEach(result => {
-                JsonScheme scheme = new JsonScheme();
-                scheme = JsonConvert.DeserializeObject<JsonScheme>(result);
-                _schemeList.Add(scheme);
+            // Youtube Response Json Deserialize
+            ListAggregation.GetResultList().ForEach(result => {
+                JsonScheme scheme = JsonConvert.DeserializeObject<JsonScheme>(result);
+                ListAggregation.SetJsonSchemeDict(scheme);
             });
             
-            _resultList.Clear();
+            // Result List Re-Initialize.
+            ListAggregation.ResultListInit();
             
-            _schemeList.ForEach(schemes => {
-                foreach (Item objItem in schemes.Items) {
-                    _willConvertList.Add(objItem);
-                }
-            });
+            // Because it is possible to save Quota,
+            // When I search for 50 items in a batch, I can add 50 VideoId to the Dictionary<page number(int), VideoId(string)> as a lump organized into.
+            ListCombination.VideoId.SetBundledDimension(ListAggregation.GetVideoIdList().ToArray());
 
-            BundledVideoId = VideoIdPackager.Bundle(_willConvertList.ToArray());
-
-            foreach (KeyValuePair<int, List<string>> bundledValue in BundledVideoId) {
+            // Send Request to YoutubeAPI. (Start Time for ScheduleLive)
+            foreach (KeyValuePair<int, List<string>> bundledValue in ListCombination.VideoId.GetBundledDimension()) {
                 string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, bundledValue.Value.ToArray())).Result;
-                _resultList.Add(startTime);
+                ListAggregation.SetResultList(startTime);
             }
 
-            int count = -1;
-            _resultList.ForEach(result => {
-                StartTimeScheme scheme = new StartTimeScheme();
-                scheme = JsonConvert.DeserializeObject<StartTimeScheme>(result);
-                _schemeExtList.Add(scheme.Items[++count].Id, scheme);
-                count++;
+            // Youtube Response Json Deserialize
+            ListAggregation.GetResultList().ForEach(result => {
+                StartTimeScheme scheme = JsonConvert.DeserializeObject<StartTimeScheme>(result);
+                ListAggregation.SetTimeScheme(scheme);
             });
 
-            BundledSchemes = SortMixedData.ToMix(_schemeList, _schemeExtList);
-            
-            SchemeOrthopedy.BundleModification(BundledSchemes);
-            
-            /*
-            _schemeList.ForEach(schemes => {
-                SchemeOrthopedy.Modification(schemes.Items);
-            });
-            */
+            // Link JsonScheme and ExtendItem whose VideoId is the same.
+            ListCombination.Scheme.SetBundleDict(ListAggregation.GetJsonSchemeList(), ListAggregation.GetTimeScheme());
+
+            // Organize necessary information and put it into a RefactorScheme and store it in List(RefactorScheme).
+            SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
+
+            // Displays the content acquired.
+            #region DISPLAY
             
             SchemeOrthopedy.GetSchemes().ForEach(i => {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
@@ -92,28 +84,20 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
             });
             
+            #endregion
+            
+            // Serialize the organized information.
             SchemeOrthopedy.GetSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
             });
             
+            // Displays serialized information.
             serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
             
+            // Send the serialize object to Database.
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());
-            
-            /*
-            //DB Insert
-            IMongoDatabase database = _mongoClient.GetDatabase("TestCollection");
-            IMongoCollection<RefactorScheme> collection = database.GetCollection<RefactorScheme>("upcoming");
-            database.DropCollection("upcoming");
-            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
-            SchemeRefactor.GetSchemes().ForEach(i => {
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをデータベースに送信します。");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"生放送予定枠：{i.Title}");
-                collection.InsertOne(i);
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_COMP, "成功しました。");
-            });
-            */
-            
+
+            // Controller Task Finish Message
             AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Task Finished !");
             AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Have a good live broadcast today !");
         }
