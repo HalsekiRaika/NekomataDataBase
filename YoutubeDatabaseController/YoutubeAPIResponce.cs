@@ -10,7 +10,7 @@ using YoutubeDatabaseController.Scheme.LogScheme;
 using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
-    public class YoutubeAPIResponce {
+    public static class YoutubeAPIResponce {
         public static async Task<string> requestAsync(HttpClient client, string channelId) {
             Uri url = new Uri("https://www.googleapis.com/youtube/v3/search")
                 .AddQuery("part", "snippet")
@@ -30,7 +30,7 @@ namespace YoutubeDatabaseController {
                 .AddArrayQuery("id", videoId);
             AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
             foreach (string value in videoId) {
-                AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"{value, 15}");
+                AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
             }
             return await client.GetStringAsync(url);
         }

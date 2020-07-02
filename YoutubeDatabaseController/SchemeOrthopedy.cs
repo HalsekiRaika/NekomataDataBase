@@ -5,7 +5,7 @@ using YoutubeDatabaseController.Scheme.LogScheme;
 using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
-    public class SchemeOrthopedy {
+    public static class SchemeOrthopedy {
         private static List<RefactorScheme> _schemes = new List<RefactorScheme>();
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {

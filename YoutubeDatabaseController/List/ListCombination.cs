@@ -3,8 +3,8 @@ using System.Text;
 using YoutubeDatabaseController.Scheme;
 
 namespace YoutubeDatabaseController.List {
-    public class ListCombination {
-        public class VideoId {
+    public static class ListCombination {
+        public static class VideoId {
             private static Dictionary<int, List<string>> _bundledDimension = new Dictionary<int, List<string>>();
             
             public static void SetBundledDimension(string[] videoIds) {
@@ -48,7 +48,7 @@ namespace YoutubeDatabaseController.List {
             }
         }
         
-        public class Scheme {
+        public static class Scheme {
             private static Dictionary<Item, ExtendItem> _bundleDictionary = new Dictionary<Item, ExtendItem>();
         
             public static void SetBundleDict(Dictionary<string, Item> dictJsonScheme, Dictionary<string, ExtendItem> dictExtendItem) {
