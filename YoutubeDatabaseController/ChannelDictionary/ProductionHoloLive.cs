@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace YoutubeDatabaseController.ChannelDictionary {
-    public class ProductionHoloLive {
+    public static class ProductionHoloLive {
         
         // Channel Names
         public static readonly string NatsuiroMatsuri  = "MatsuriChannel";

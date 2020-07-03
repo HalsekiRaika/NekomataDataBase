@@ -6,6 +6,7 @@ using Log5RLibs.Services;
 using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using YoutubeDatabaseController.ChannelDictionary;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -30,7 +31,7 @@ namespace YoutubeDatabaseController {
             HttpClient httpClient = new HttpClient();
             
             // Send Request to YoutubeAPI.
-            ChannelIDList.GetChannelId().ForEach(channelId => {
+            ProductionHoloLive.GetAllKey().ForEach(channelId => {
                 string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
                 ListAggregation.SetResultList(result);
             });
