@@ -14,6 +14,10 @@ namespace YoutubeDatabaseController {
         public static readonly string Hololive = "Hololive";
         public static readonly string Nijisanji = "Nijisanji";
         public static readonly string AniMare = "Animare";
+        
+        //Mongo Auth
+        public static string User { get; set; }
+        public static string Psss { get; set; }
 
     }
     

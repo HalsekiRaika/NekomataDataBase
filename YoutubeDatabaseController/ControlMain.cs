@@ -20,11 +20,13 @@ namespace YoutubeDatabaseController {
         
         static void Main(string[] args) {
             Console.WriteLine(Settings.StartupMessage);
+            
+            ArgumentParser.Decomposition(args);
 
             // Set Client for Environment (Windows or Linux).
             _mongoClient = EnvironmentCheck.IsLinux()
-                ? new MongoClient("mongodb://124.0.0.1")
-                : new MongoClient("mongodb://192.168.0.5");
+                ? new MongoClient($"mongodb://{Settings.User}:{Settings.Psss}@124.0.0.1")
+                : new MongoClient($"mongodb://{Settings.User}:{Settings.Psss}@192.168.0.5");
             
             // Set Http Client. (For Reuse)
             // HttpClient isn't disposable, but is designed to "For Reuse".
@@ -57,6 +59,9 @@ namespace YoutubeDatabaseController {
                 string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, bundledValue.Value.ToArray())).Result;
                 ListAggregation.SetResultList(startTime);
             }
+            
+            // Finish Message
+            AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
 
             // Youtube Response Json Deserialize
             ListAggregation.GetResultList().ForEach(result => {
