@@ -23,7 +23,12 @@ namespace YoutubeDatabaseController {
                     Publish       = itemValue.Key.Snippet.PublishTime.ToString(),
                 };
                 if (!LiveCheck.IsFreeChat(itemValue.Key)) {
-                    _schemes.Add(refactorScheme);
+                    if (!LiveCheck.IsFinishedLive(refactorScheme)) {
+                        _schemes.Add(refactorScheme);
+                    } else {
+                        AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "既に終了したライブを検出し、除外しました。");
+                        AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, $"対象：{itemValue.Key.Snippet.Title}");
+                    }
                 } else {
                     AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "フリーチャット専用枠を検出し、除外しました。");
                     AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, $"対象：{itemValue.Key.Snippet.Title}");
