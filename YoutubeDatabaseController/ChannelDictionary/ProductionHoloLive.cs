@@ -4,35 +4,35 @@ namespace YoutubeDatabaseController.ChannelDictionary {
     public static class ProductionHoloLive {
         
         // Channel Names
-        public static readonly string NatsuiroMatsuri  = "MatsuriChannel";
-        public static readonly string OozoraSubaru     = "SubaruChannel";
-        public static readonly string Akirosenthal     = "AkirozeChannel";
-        public static readonly string AkaiHaato        = "HaatoChannel";
-        public static readonly string NakiriAyame      = "NakiriChannel";
-        public static readonly string InugamiKorone    = "KoroneChannel";
-        public static readonly string ShiranuiFlare    = "FlareChannel";
-        public static readonly string TokoyamiTowa     = "TowaChannel";
-        public static readonly string UsadaPekora      = "PekoraChannel";
-        public static readonly string MinatoAqua       = "AquaChannel";
-        public static readonly string KiryuuCoco       = "CocoChannel";
-        public static readonly string HoshimachiSuisei = "SuiseiChannel";
-        public static readonly string NekomataOkayu    = "OkayuChannel";
-        public static readonly string TsunomakiWatame  = "WatameChannel";
-        public static readonly string UruhaRushia      = "UruhaRushia";
-        public static readonly string ShiroganeNoel    = "ShiroganeNoel";
-        public static readonly string YozoraMel        = "MelChannel";
-        public static readonly string Roboco           = "RobocoChannel";
-        public static readonly string TokinoSora       = "SoraChannel";
-        public static readonly string ShirakamiFubuki  = "FubukiChannel";
-        public static readonly string OokamiMio        = "MioChannel";
-        public static readonly string MurasakiShion    = "ShionChannel";
-        public static readonly string AmaneKanata      = "KanataChannel";
-        public static readonly string YuzukiChoco      = "ChocoChannel";
-        public static readonly string YuzukiChocoSub   = "ChocoSubChannel";
-        public static readonly string HoushouMarine    = "MarineChannel";
-        public static readonly string HimemoriLuna     = "LunaChannel";
-        public static readonly string SakuraMiko       = "MikoChannel";
-        public static readonly string AZKi             = "AZKiChannel";
+        public const string NatsuiroMatsuri  = "MatsuriChannel";
+        public const string OozoraSubaru     = "SubaruChannel";
+        public const string Akirosenthal     = "AkirozeChannel";
+        public const string AkaiHaato        = "HaatoChannel";
+        public const string NakiriAyame      = "NakiriChannel";
+        public const string InugamiKorone    = "KoroneChannel";
+        public const string ShiranuiFlare    = "FlareChannel";
+        public const string TokoyamiTowa     = "TowaChannel";
+        public const string UsadaPekora      = "PekoraChannel";
+        public const string MinatoAqua       = "AquaChannel";
+        public const string KiryuuCoco       = "CocoChannel";
+        public const string HoshimachiSuisei = "SuiseiChannel";
+        public const string NekomataOkayu    = "OkayuChannel";
+        public const string TsunomakiWatame  = "WatameChannel";
+        public const string UruhaRushia      = "UruhaRushia";
+        public const string ShiroganeNoel    = "ShiroganeNoel";
+        public const string YozoraMel        = "MelChannel";
+        public const string Roboco           = "RobocoChannel";
+        public const string TokinoSora       = "SoraChannel";
+        public const string ShirakamiFubuki  = "FubukiChannel";
+        public const string OokamiMio        = "MioChannel";
+        public const string MurasakiShion    = "ShionChannel";
+        public const string AmaneKanata      = "KanataChannel";
+        public const string YuzukiChoco      = "ChocoChannel";
+        public const string YuzukiChocoSub   = "ChocoSubChannel";
+        public const string HoushouMarine    = "MarineChannel";
+        public const string HimemoriLuna     = "LunaChannel";
+        public const string SakuraMiko       = "MikoChannel";
+        public const string AZKi             = "AZKiChannel";
 
         // Channel Id Dictionary
         private static readonly Dictionary<string, string> IdDict = new Dictionary<string, string>() {

@@ -15,6 +15,14 @@ namespace YoutubeDatabaseController {
             IMongoDatabase databaseNijisanji = client.GetDatabase(Settings.Nijisanji);
             IMongoDatabase databaseAnimare   = client.GetDatabase(Settings.AniMare);
             
+            Dictionary<string, IMongoCollection<RefactorScheme>> collections = new Dictionary<string, IMongoCollection<RefactorScheme>>() {
+                {ProductionHoloLive.NatsuiroMatsuri, databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NatsuiroMatsuri)},
+                {ProductionHoloLive.OozoraSubaru   , databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.OozoraSubaru)},
+                {ProductionHoloLive.Akirosenthal   , databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.Akirosenthal)},
+                {ProductionHoloLive.AkaiHaato      , databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.AkaiHaato)},
+                {ProductionHoloLive.NakiriAyame    , databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NakiriAyame)}
+            };
+            
             // HoloLive Channel Collection
             IMongoCollection<RefactorScheme> collectionMatsuriChannel  =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.NatsuiroMatsuri);
@@ -104,6 +112,8 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ================================================ ");
                 AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
                 
+                //collections[searchedObject].InsertOne(schemes);
+
                 if (ProductionHoloLive.NatsuiroMatsuri         == searchedObject) {
                     collectionMatsuriChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.OozoraSubaru     == searchedObject) {
@@ -116,7 +126,7 @@ namespace YoutubeDatabaseController {
                     collectionAyameChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.InugamiKorone    == searchedObject) {
                     collectionKoroneChannel.InsertOne(schemes);
-                } else if (ProductionHoloLive.ShiranuiFlare     == searchedObject) {
+                } else if (ProductionHoloLive.ShiranuiFlare    == searchedObject) {
                     collectionFlareChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.TokoyamiTowa     == searchedObject) {
                     collectionTowaChannel.InsertOne(schemes);
