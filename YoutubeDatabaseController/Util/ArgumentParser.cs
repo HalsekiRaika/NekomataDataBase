@@ -3,7 +3,7 @@ using Log5RLibs.Services;
 using Log5RLibs.utils;
 
 namespace YoutubeDatabaseController.Util {
-    public class ArgumentParser {
+    public static class ArgumentParser {
         public static void Decomposition(string[] targetArgs) {
             try {
                 for (int i = 0; i < targetArgs.Length; i++) {
@@ -13,7 +13,7 @@ namespace YoutubeDatabaseController.Util {
                             break;
                         
                         case "--pass":
-                            Settings.Psss = targetArgs[++i];
+                            Settings.Pass = targetArgs[++i];
                             break;
                     }
                 }

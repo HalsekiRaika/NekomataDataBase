@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
 using Log5RLibs.utils;
@@ -11,27 +12,32 @@ using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
 using YoutubeDatabaseController.Util;
+using static YoutubeDatabaseController.Scheme.LogScheme.DefaultScheme;
 
 namespace YoutubeDatabaseController {
-    public class ControlMain {
+    public static class ControlMain {
         private static List<string>     serializedObject = new List<string>();
         
         private static MongoClient _mongoClient;
         
         static void Main(string[] args) {
             Console.WriteLine(Settings.StartupMessage);
-            
+
             ArgumentParser.Decomposition(args);
+            
+            ConfigLoader.OnLoadEvent();
+            
+            //Thread.Sleep(50000);
 
             // Set Client for Environment (Windows or Linux).
             _mongoClient = EnvironmentCheck.IsLinux()
-                ? new MongoClient($"mongodb://{Settings.User}:{Settings.Psss}@124.0.0.1")
-                : new MongoClient($"mongodb://{Settings.User}:{Settings.Psss}@192.168.0.5");
+                ? new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@124.0.0.1")
+                : new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@{Settings.NekomataAws}");
             
             // Set Http Client. (For Reuse)
             // HttpClient isn't disposable, but is designed to "For Reuse".
             HttpClient httpClient = new HttpClient();
-            
+
             // Send Request to YoutubeAPI.
             ProductionHoloLive.GetAllKey().ForEach(channelId => {
                 string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
@@ -75,22 +81,6 @@ namespace YoutubeDatabaseController {
             // Organize necessary information and put it into a RefactorScheme and store it in List(RefactorScheme).
             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
-            // Displays the content acquired.
-            #region DISPLAY
-            
-            SchemeOrthopedy.GetSchemes().ForEach(i => {
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Title);
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Description);
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.ChannelName);
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.StartTime.ToString());
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Publish.ToString());
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, i.Thumbnail.Url.ToString());
-                AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "==============================================");
-            });
-            
-            #endregion
-            
             // Serialize the organized information.
             SchemeOrthopedy.GetSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
@@ -103,8 +93,8 @@ namespace YoutubeDatabaseController {
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());
 
             // Controller Task Finish Message
-            AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Task Finished !");
-            AlConsole.WriteLine(AlStatusEnum.Information, null,"Controller", "Have a good live broadcast today !");
+            AlConsole.WriteLine(CONTROLLER, "Task Finished !");
+            AlConsole.WriteLine(CONTROLLER, "Have a good live broadcast today !");
         }
     }
 }

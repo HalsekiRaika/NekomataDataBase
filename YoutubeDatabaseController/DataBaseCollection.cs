@@ -45,7 +45,7 @@ namespace YoutubeDatabaseController {
             IMongoCollection<RefactorScheme> collectionAquaChannel     =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.MinatoAqua);
             IMongoCollection<RefactorScheme> collectionCocoChannel     =
-                databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.KiryuuCoco);
+                databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.KiryuCoco);
             IMongoCollection<RefactorScheme> collectionSuiseiChannel   =
                 databaseHololive.GetCollection<RefactorScheme>(ProductionHoloLive.HoshimachiSuisei);
             IMongoCollection<RefactorScheme> collectionOkayuChannel    =
@@ -134,7 +134,7 @@ namespace YoutubeDatabaseController {
                     collectionPekoraChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.MinatoAqua       == searchedObject) {
                     collectionAquaChannel.InsertOne(schemes);
-                } else if (ProductionHoloLive.KiryuuCoco       == searchedObject) {
+                } else if (ProductionHoloLive.KiryuCoco       == searchedObject) {
                     collectionCocoChannel.InsertOne(schemes);
                 } else if (ProductionHoloLive.HoshimachiSuisei == searchedObject) {
                     collectionSuiseiChannel.InsertOne(schemes);

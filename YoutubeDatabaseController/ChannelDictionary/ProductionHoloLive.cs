@@ -14,11 +14,11 @@ namespace YoutubeDatabaseController.ChannelDictionary {
         public const string TokoyamiTowa     = "TowaChannel";
         public const string UsadaPekora      = "PekoraChannel";
         public const string MinatoAqua       = "AquaChannel";
-        public const string KiryuuCoco       = "CocoChannel";
+        public const string KiryuCoco        = "CocoChannel";
         public const string HoshimachiSuisei = "SuiseiChannel";
         public const string NekomataOkayu    = "OkayuChannel";
         public const string TsunomakiWatame  = "WatameChannel";
-        public const string UruhaRushia      = "UruhaRushia";
+        public const string UruhaRushia      = "RushiaChnnel";
         public const string ShiroganeNoel    = "ShiroganeNoel";
         public const string YozoraMel        = "MelChannel";
         public const string Roboco           = "RobocoChannel";
@@ -46,7 +46,7 @@ namespace YoutubeDatabaseController.ChannelDictionary {
             {"UC1uv2Oq6kNxgATlCiez59hw",     TokoyamiTowa},
             {"UC1DCedRgGHBdm81E1llLhOQ",      UsadaPekora},
             {"UC1opHUrw8rvnsadT-iGp7Cg",       MinatoAqua},
-            {"UCS9uQI-jC3DE0L4IpXyvr6w",       KiryuuCoco},
+            {"UCS9uQI-jC3DE0L4IpXyvr6w",        KiryuCoco},
             {"UC5CwaMl1eIgY8h02uZw7u8A", HoshimachiSuisei},
             {"UCvaTdHTWBGv3MKj3KVqJVCw",    NekomataOkayu},
             {"UCqm3BQLlJfvkTsX_hvm0UmA",  TsunomakiWatame},
