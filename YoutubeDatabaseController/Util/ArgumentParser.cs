@@ -15,6 +15,10 @@ namespace YoutubeDatabaseController.Util {
                         case "--pass":
                             Settings.Pass = targetArgs[++i];
                             break;
+                        
+                        case "--local":
+                            Settings.isLocal = targetArgs[++i].Equals("true");
+                            break;
                     }
                 }
             } catch (IndexOutOfRangeException) {

@@ -30,7 +30,7 @@ namespace YoutubeDatabaseController {
             //Thread.Sleep(50000);
 
             // Set Client for Environment (Windows or Linux).
-            _mongoClient = EnvironmentCheck.IsLinux()
+            _mongoClient = Settings.isLocal
                 ? new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@124.0.0.1")
                 : new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@{Settings.NekomataAws}");
             

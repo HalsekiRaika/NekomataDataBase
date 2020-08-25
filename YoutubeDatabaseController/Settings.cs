@@ -22,6 +22,7 @@ namespace YoutubeDatabaseController {
         public static readonly string ConfigDir = AppDomain.CurrentDomain.BaseDirectory + "Config\\";
         
         //Mongo Auth
+        public static bool isLocal { get; set; }
         public static string User { get; set; }
         public static string Pass { get; set; }
 
