@@ -12,8 +12,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Libs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Reference Include="Log5RLibs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\Libralies\Log5RLibs\1.8\Log5RLibs.dll</HintPath>
+        <HintPath>..\..\NekomataResponseServer\NekomataResponseServer\Libs\Log5RLibs.dll</HintPath>
       </Reference>
     </ItemGroup>
 
