@@ -87,7 +87,7 @@ namespace YoutubeDatabaseController {
             });
             
             // Displays serialized information.
-            serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString()));
+            serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString().Substring(0, 64)));
             
             // Send the serialize object to Database.
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());
