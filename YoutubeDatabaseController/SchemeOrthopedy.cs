@@ -10,6 +10,7 @@ namespace YoutubeDatabaseController {
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
                 RefactorScheme refactorScheme = new RefactorScheme() {
+                    _id           = GenUuid.Generate(),
                     Title         = itemValue.Key.Snippet.Title,
                     Description   = itemValue.Key.Snippet.Description,
                     ChannelName   = itemValue.Key.Snippet.ChannelTitle,

@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 
 namespace YoutubeDatabaseController.Scheme {
     public partial class RefactorScheme {
+        [JsonProperty("_id")]
+        public string _id { get; set; }
         [JsonProperty("VideoTitle")]
         public string Title { get; set; }
         [JsonProperty("VideoDescription")]
