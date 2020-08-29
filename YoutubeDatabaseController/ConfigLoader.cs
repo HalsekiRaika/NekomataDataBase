@@ -15,7 +15,7 @@ namespace YoutubeDatabaseController {
                 using (StreamReader reader = new StreamReader(file)) {
                     string raw = reader.ReadToEnd();
                     ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
-                    AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name}.toml => Parsed!");
+                    AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", -32} => Parsed!");
                     loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
                 }
             }
