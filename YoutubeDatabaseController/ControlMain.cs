@@ -95,6 +95,7 @@ namespace YoutubeDatabaseController {
 
             // Controller Task Finish Message
             AlConsole.WriteLine(CONTROLLER, "Task Finished !");
+            AlConsole.WriteLine(CONTROLLER, $"Number of Scheduled Live => {SchemeOrthopedy.GetSchemes().Count}");
             AlConsole.WriteLine(CONTROLLER, "Have a good live broadcast today !");
         }
     }
