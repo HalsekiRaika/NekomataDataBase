@@ -18,7 +18,7 @@ namespace YoutubeDatabaseController {
                 .AddQuery("type", "video")
                 .AddQuery("eventType", "upcoming")
                 .AddQuery("key", getToken());
-            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString());
+            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString().Substring(0, 129) + "[SECRET TOKEN]");
             string result = await client.GetStringAsync(url);
             return result;
         }
