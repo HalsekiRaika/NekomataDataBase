@@ -19,8 +19,12 @@ namespace YoutubeDatabaseController {
         public static readonly string NekomataLocal = "192.168.0.5";
 
         // Config Dir
-        public static readonly string ConfigDir = AppDomain.CurrentDomain.BaseDirectory + "Config\\";
-        
+        private static readonly OperatingSystem operatingSystem = Environment.OSVersion;
+        private static readonly string WinConfigDir = AppDomain.CurrentDomain.BaseDirectory + "Config\\";
+        private static readonly string LinuxConfigDir = AppDomain.CurrentDomain.BaseDirectory + "Config/";
+        public  static readonly string ConfigDir =
+            operatingSystem.Platform != PlatformID.Win32NT ? LinuxConfigDir : WinConfigDir;
+
         //Mongo Auth
         public static bool isLocal { get; set; }
         public static string User { get; set; }

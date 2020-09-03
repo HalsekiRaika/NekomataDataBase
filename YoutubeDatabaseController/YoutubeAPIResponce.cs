@@ -38,7 +38,7 @@ namespace YoutubeDatabaseController {
         private static string getToken() {
             OperatingSystem operatingSystem = Environment.OSVersion;
             StreamReader reader = operatingSystem.Platform != PlatformID.Win32NT
-                ? new StreamReader("/home/ubuntu")
+                ? new StreamReader("/home/ubuntu/APIToken.txt")
                 : new StreamReader("C:\\Token\\YoutubeAPIToken.txt");
             return reader.ReadToEnd();
         }
