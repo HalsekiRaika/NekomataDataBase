@@ -32,7 +32,7 @@ namespace YoutubeDatabaseController {
                 AlConsole.WriteLine(CONFIG_EXCEPTION, $"NekomataLibrary: https://github.com/ReiRokusanami0010/NekomataLibrary");
                 Environment.Exit(-1);
             }
-            return Directory.GetFiles(Settings.ConfigDir + $"{targetConfig}\\", "*.toml");
+            return Directory.GetFiles(Settings.ConfigDir + $"{targetConfig}" + (Settings.IsLinux ? "/" : "\\"), "*.toml");
         }
     }
 }
