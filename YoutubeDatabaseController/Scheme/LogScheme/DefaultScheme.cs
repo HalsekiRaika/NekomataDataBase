@@ -3,6 +3,7 @@
 namespace YoutubeDatabaseController.Scheme.LogScheme {
     public static class DefaultScheme {
         private const int MAX_INDEX = -15;
+        private static readonly string CONTROLLER_RUN  = $"{"START UP"      , MAX_INDEX}";
         private static readonly string CONTROLLER_INFO = $"{"Controller"    , MAX_INDEX}";
         private static readonly string CONFIG_LOADER   = $"{"Config Loader" , MAX_INDEX}";
         private static readonly string YOUTUBE_API     = $"{"Youtube API"   , MAX_INDEX}";
@@ -12,6 +13,7 @@ namespace YoutubeDatabaseController.Scheme.LogScheme {
         private static readonly string DB_INSERT_DATA  = $"{"DB DataInsert" , MAX_INDEX}";
         
         // Controller
+        public static readonly AlCConfigScheme START_UP               = new AlCConfigScheme(0, null, CONTROLLER_RUN);
         public static readonly AlCConfigScheme CONTROLLER             = new AlCConfigScheme(0, null, CONTROLLER_INFO);
 
         // Youtube API

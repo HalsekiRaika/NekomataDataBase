@@ -8,6 +8,7 @@ using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using YoutubeDatabaseController.ChannelDictionary;
+using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -21,7 +22,7 @@ namespace YoutubeDatabaseController {
         private static MongoClient _mongoClient;
         
         static void Main(string[] args) {
-            Console.WriteLine(Settings.StartupMessage);
+            AlExtension.ArrayWrite(START_UP, Settings.Startup);
 
             ArgumentParser.Decomposition(args);
             
@@ -87,7 +88,7 @@ namespace YoutubeDatabaseController {
             });
             
             // Displays serialized information.
-            serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, i.ToString().Substring(0, 64)));
+            serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, $"{i.ToString().Substring(0, 64), -67}" + "......[OMT]"));
             
             // Send the serialize object to Database.
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());

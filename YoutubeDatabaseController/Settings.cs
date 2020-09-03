@@ -1,13 +1,13 @@
 ﻿using System;
 
 namespace YoutubeDatabaseController {
-    public class Settings {
-        public static String StartupMessage = 
-            "------------------ RUN START ------------------\n" + 
-           $"{DateTime.Now:F}\n" +
-            "Target YoutubeChannel Dump\n" +
-            "Tool was Created By ReiRokusanami\n" +
-            "-----------------------------------------------\n";
+    public static class Settings {
+        public static string[] Startup = new string[] {
+            "------------------ RUN START ------------------",
+            $"{DateTime.Now:F}",
+            "Tool was Created By ReiRokusanami",
+            "-----------------------------------------------"
+        };
 
         // Production Names
         public static readonly string Hololive = "Hololive";
