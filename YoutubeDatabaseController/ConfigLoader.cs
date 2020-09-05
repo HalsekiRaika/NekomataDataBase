@@ -1,38 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Log5RLibs.Services;
+using MongoDB.Driver;
 using Nett;
+using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme;
 using static YoutubeDatabaseController.Scheme.LogScheme.DefaultScheme;
 
 namespace YoutubeDatabaseController {
-    public static class ConfigLoader {
-        public static Dictionary<string, ConfigScheme> OnLoadEvent() {
-            string[] configHololiveFiles = _ConfigFileDir(Settings.Hololive);
-            Dictionary<string, ConfigScheme> loadedDict = new Dictionary<string, ConfigScheme>();
-            foreach (string file in configHololiveFiles) {
-                using (StreamReader reader = new StreamReader(file)) {
-                    string raw = reader.ReadToEnd();
-                    ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
-                    AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", -32} => Parsed!");
-                    loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
-                }
-            }
-            AlConsole.WriteLine(CONFIG_INFORMATION, $"All Config Operational!");
-            
-            return loadedDict;
+    #region LOADED_COMPONENT
+    public static class LoadedComponent {
+        private static Dictionary<string, IMongoCollection<RefactorScheme>> _collections = new Dictionary<string, IMongoCollection<RefactorScheme>>();
+        private static Dictionary<string, string> _channelIdComponent = new Dictionary<string, string>();
+
+        public static void SetCollectionDict(string dbName, IMongoCollection<RefactorScheme> targetCollection) {
+            _collections.Add(dbName, targetCollection);
         }
 
-        private static string[] _ConfigFileDir(string targetConfig) {
+        public static void SetChannelIdComponent(string channelId, string dbName) {
+            _channelIdComponent.Add(channelId, dbName);
+        }
+
+        public static List<string> GetChannelId() {
+            List<string> channelId = new List<string>();
+            foreach (KeyValuePair<string, string> pair in _channelIdComponent) {
+                channelId.Add(pair.Key);
+            }
+            return channelId;
+        }
+
+        public static List<string> GetDataBaseName() {
+            List<string> databaseName = new List<string>();
+            foreach (KeyValuePair<string, string> pair in _channelIdComponent) {
+                databaseName.Add(pair.Value);
+            }
+            return databaseName;
+        }
+
+        public static Dictionary<string, IMongoCollection<RefactorScheme>> GetAllCollections() {
+            return _collections;
+        }
+    }
+    #endregion
+    public static class ConfigLoader {
+        public static void OnLoadEvent(MongoClient client) {
+            AlConsole.WriteLine(CONFIG_INFORMATION, "-> First Initialization.");
+            
+            List<string> configFolders = _ConfigFolderDir();
+            Dictionary<string, string[]>     configFiles = _ConfigFileDir(configFolders);
+            Dictionary<string, ConfigScheme> loadedDict  = new Dictionary<string, ConfigScheme>();
+            Dictionary<string, Dictionary<string, ConfigScheme>> groupedDict = new Dictionary<string, Dictionary<string, ConfigScheme>>();
+            foreach (KeyValuePair<string, string[]> fileComponent in configFiles) {
+                loadedDict.Clear();
+                AlConsole.WriteLine(CONFIG_INFORMATION, $"Parse Group [ {fileComponent.Key.Substring(Settings.ConfigDir.Length)} ]");
+                foreach (string file in fileComponent.Value) {
+                    using (StreamReader reader = new StreamReader(file)) {
+                        string raw = reader.ReadToEnd();
+                        ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
+                        AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", -32} => Parsed!");
+                        loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
+                    }
+                }
+                groupedDict.Add(fileComponent.Key.Substring(Settings.ConfigDir.Length), loadedDict);
+            }
+            AlConsole.WriteLine(CONFIG_INFORMATION, $"Loaded All Config Operational!");
+            AlConsole.WriteLine(CONFIG_INFORMATION, "-> Second Initialization.");
+            GenerateDataBaseProperty(client, groupedDict);
+            AlConsole.WriteLine(CONFIG_INFORMATION, $"Generated DataBase Property from Loaded Config.");
+        }
+
+        // Dictionary<MemberName(string), Dictionary<DataBaseName(string), DBProperty(IMongoCollection<RefactorScheme>)>>
+        private static void GenerateDataBaseProperty(MongoClient client, Dictionary<string, Dictionary<string, ConfigScheme>> configComponent) {
+            foreach (KeyValuePair<string, Dictionary<string, ConfigScheme>> groupedCorp in configComponent) {
+                IMongoDatabase targetDataBase = client.GetDatabase(groupedCorp.Key);
+                AlConsole.WriteLine(CONFIG_INFORMATION, "-->Generate DataBase Property");
+                AlConsole.WriteLine(CONFIG_INFORMATION, $" ┏ DataBase[ {groupedCorp.Key} ]");
+                foreach (KeyValuePair<string, ConfigScheme> configDict in groupedCorp.Value) {
+                    IMongoCollection<RefactorScheme> generatedCollection =
+                        targetDataBase.GetCollection<RefactorScheme>(configDict.Key);
+                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -16}" + " ]");
+                    LoadedComponent.SetCollectionDict(configDict.Key, generatedCollection);
+                    LoadedComponent.SetChannelIdComponent(configDict.Value.ChannelData[0].Details[0].ID.ToString(), configDict.Key);
+                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
+                }
+                AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
+            }
+        }
+
+        private static List<string> _ConfigFolderDir() {
             DirectoryInfo dInfo = new DirectoryInfo(Settings.ConfigDir);
             if (!dInfo.Exists) {
-                AlConsole.WriteLine(CONFIG_EXCEPTION, "Configディレクトリが存在しません。");
-                AlConsole.WriteLine(CONFIG_EXCEPTION, $"[ {Settings.ConfigDir} ]に以下URLのConfigファイルをセットしてください。");
-                AlConsole.WriteLine(CONFIG_EXCEPTION, $"NekomataLibrary: https://github.com/ReiRokusanami0010/NekomataLibrary");
+                string[] errMsg = new string[] {
+                    "Configディレクトリが存在しません。",
+                    $"[ {Settings.ConfigDir} ]に以下URLのConfigファイルをセットしてください。",
+                    "NekomataLibrary: https://github.com/ReiRokusanami0010/NekomataLibrary"
+                };
+                AlExtension.ArrayWrite(CONFIG_EXCEPTION, errMsg);
                 Environment.Exit(-1);
             }
-            return Directory.GetFiles(Settings.ConfigDir + $"{targetConfig}" + (Settings.IsLinux ? "/" : "\\"), "*.toml");
+            List<string> detectDirNames = Directory.GetDirectories(Settings.ConfigDir).ToList<string>();
+            detectDirNames.Remove($"{Settings.ConfigDir}.git");
+            foreach (string detectName in detectDirNames) {
+                AlConsole.WriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> [ {detectName, -18} ]");
+            }
+
+            return detectDirNames;
+        }
+
+        // Dictionary<FolderName(string), FileName(string[])>
+        private static Dictionary<string, string[]> _ConfigFileDir(List<string> targetConfig) {
+            Dictionary<string, string[]> configInfo = new Dictionary<string, string[]>();
+            foreach (string folder in targetConfig) {
+                configInfo.Add(folder, Directory.GetFiles($"{folder}" + (Settings.IsLinux ? "/" : "\\"), "*.toml"));
+            }
+            
+            return configInfo;
         }
     }
 }

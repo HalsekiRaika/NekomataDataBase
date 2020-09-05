@@ -14,10 +14,10 @@
     
     public partial class ChannelData {
         public string SiteName { get; set; }
-        public Details[] Detailses { get; set; }
+        public Details[] Details { get; set; }
     }
     
     public partial class Details {
-        public string ID { get; set; }
+        public object ID { get; set; }
     }
 }

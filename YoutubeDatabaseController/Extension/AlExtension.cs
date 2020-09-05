@@ -1,7 +1,7 @@
 ﻿using Log5RLibs.Services;
 
 namespace YoutubeDatabaseController.Extension {
-    public class AlExtension {
+    public static class AlExtension {
         private static readonly object LockObj = new object();
         public static void ArrayWrite(AlCConfigScheme preset, string[] array) {
             foreach (string writeObj in array) {

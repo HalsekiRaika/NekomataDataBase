@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
-using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using YoutubeDatabaseController.ChannelDictionary;
@@ -17,23 +14,22 @@ using static YoutubeDatabaseController.Scheme.LogScheme.DefaultScheme;
 
 namespace YoutubeDatabaseController {
     public static class ControlMain {
-        private static List<string>     serializedObject = new List<string>();
-        
+        private static List<string> serializedObject = new List<string>();
         private static MongoClient _mongoClient;
         
         static void Main(string[] args) {
             AlExtension.ArrayWrite(START_UP, Settings.Startup);
 
             ArgumentParser.Decomposition(args);
-            
-            ConfigLoader.OnLoadEvent();
-            
+
             //Thread.Sleep(50000);
 
             // Set Client for Environment (Windows or Linux).
             _mongoClient = Settings.isLocal
                 ? new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@124.0.0.1")
                 : new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@{Settings.NekomataAws}");
+            
+            ConfigLoader.OnLoadEvent(_mongoClient);
             
             // Set Http Client. (For Reuse)
             // HttpClient isn't disposable, but is designed to "For Reuse".

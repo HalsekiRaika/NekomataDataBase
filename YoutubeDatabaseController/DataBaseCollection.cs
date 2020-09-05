@@ -7,7 +7,7 @@ using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController {
-    public class DataBaseCollection {
+    public static class DataBaseCollection {
         public static void Insert(MongoClient client, List<RefactorScheme> schemeList) {
             
             // Production DataBase
