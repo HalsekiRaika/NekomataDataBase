@@ -13,10 +13,11 @@ namespace YoutubeDatabaseController {
     #region LOADED_COMPONENT
     public static class LoadedComponent {
         private static Dictionary<string, IMongoCollection<RefactorScheme>> _collections = new Dictionary<string, IMongoCollection<RefactorScheme>>();
+        private static Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> _collection = new Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>>();
         private static Dictionary<string, string> _channelIdComponent = new Dictionary<string, string>();
 
-        public static void SetCollectionDict(string dbName, IMongoCollection<RefactorScheme> targetCollection) {
-            _collections.Add(dbName, targetCollection);
+        public static void SetCollectionDict(IMongoDatabase database, Dictionary<string, IMongoCollection<RefactorScheme>> targetCollection) {
+            _collection.Add(database, targetCollection);
         }
 
         public static void SetChannelIdComponent(string channelId, string dbName) {
@@ -39,8 +40,22 @@ namespace YoutubeDatabaseController {
             return databaseName;
         }
 
-        public static Dictionary<string, IMongoCollection<RefactorScheme>> GetAllCollections() {
-            return _collections;
+        public static Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> GetAllCollections() {
+            return _collection;
+        }
+
+        public static Dictionary<string, IMongoCollection<RefactorScheme>> GetCollection() {
+            Dictionary<string, IMongoCollection<RefactorScheme>> dictionary = new Dictionary<string, IMongoCollection<RefactorScheme>>();
+            foreach (KeyValuePair<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> pair in _collection) {
+                foreach (KeyValuePair<string, IMongoCollection<RefactorScheme>> valuePair in pair.Value) {
+                    dictionary.Add(valuePair.Key, valuePair.Value);
+                }
+            }
+            return dictionary;
+        }
+        
+        public static string GetDataBaseName(string channelId) {
+            return _channelIdComponent[channelId];
         }
     }
     #endregion
@@ -73,6 +88,7 @@ namespace YoutubeDatabaseController {
 
         // Dictionary<MemberName(string), Dictionary<DataBaseName(string), DBProperty(IMongoCollection<RefactorScheme>)>>
         private static void GenerateDataBaseProperty(MongoClient client, Dictionary<string, Dictionary<string, ConfigScheme>> configComponent) {
+            Dictionary<string, IMongoCollection<RefactorScheme>> collectionsBuf = new Dictionary<string, IMongoCollection<RefactorScheme>>();
             foreach (KeyValuePair<string, Dictionary<string, ConfigScheme>> groupedCorp in configComponent) {
                 IMongoDatabase targetDataBase = client.GetDatabase(groupedCorp.Key);
                 AlConsole.WriteLine(CONFIG_INFORMATION, "-->Generate DataBase Property");
@@ -81,10 +97,11 @@ namespace YoutubeDatabaseController {
                     IMongoCollection<RefactorScheme> generatedCollection =
                         targetDataBase.GetCollection<RefactorScheme>(configDict.Key);
                     AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -16}" + " ]");
-                    LoadedComponent.SetCollectionDict(configDict.Key, generatedCollection);
+                    collectionsBuf.Add(configDict.Key, generatedCollection);
                     LoadedComponent.SetChannelIdComponent(configDict.Value.ChannelData[0].Details[0].ID.ToString(), configDict.Key);
                     AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
                 }
+                LoadedComponent.SetCollectionDict(targetDataBase, collectionsBuf);
                 AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
             }
         }

@@ -36,11 +36,16 @@ namespace YoutubeDatabaseController {
             HttpClient httpClient = new HttpClient();
 
             // Send Request to YoutubeAPI.
-            ProductionHoloLive.GetAllKey().ForEach(channelId => {
+            LoadedComponent.GetChannelId().ForEach(channelId => {
                 string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
                 ListAggregation.SetResultList(result);
             });
             
+            //ProductionHoloLive.GetAllKey().ForEach(channelId => {
+            //    string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
+            //    ListAggregation.SetResultList(result);
+            //});
+
             // Finish Message
             AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
 
