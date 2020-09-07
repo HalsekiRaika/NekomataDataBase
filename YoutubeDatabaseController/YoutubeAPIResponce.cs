@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme.LogScheme;
-using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public static class YoutubeAPIResponce {
@@ -23,15 +22,16 @@ namespace YoutubeDatabaseController {
             return result;
         }
 
-        public static async Task<string> RequestStartTimeAsync(HttpClient client, string[] videoId) {
+        public static async Task<string> RequestStartTimeAsync(HttpClient client, string videoIds /*string[] videoId */) {
             Uri url = new Uri("https://www.googleapis.com/youtube/v3/videos?")
                 .AddQuery("part", "liveStreamingDetails")
                 .AddQuery("key", getToken())
-                .AddArrayQuery("id", videoId);
+                .AddQuery("id", videoIds);
+                //.AddArrayQuery("id", videoId);
             AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
-            foreach (string value in videoId) {
-                AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
-            }
+            //foreach (string value in videoId) {
+            //    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
+            //}
             return await client.GetStringAsync(url);
         }
 

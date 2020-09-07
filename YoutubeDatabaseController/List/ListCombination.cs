@@ -3,23 +3,25 @@ using YoutubeDatabaseController.Scheme;
 
 namespace YoutubeDatabaseController.List {
     public static class ListCombination {
+        /// <summary>
+        /// @Deprecated
+        /// </summary>
         public static class VideoId {
             private static Dictionary<int, List<string>> _bundledDimension = new Dictionary<int, List<string>>();
             
             public static void SetBundledDimension(string[] videoIds) {
                 List<string> bundledList = new List<string>();
                 if (videoIds.Length >= 50) {
-                    List<string> dimBuffer = new List<string>();
                     int calcLimit = LengthCalculate(videoIds.Length);
                     for (int i = 0; i < calcLimit; i++) {
-                        dimBuffer.Clear();
+                        List<string> dimBuffer = new List<string>();
                         for (int j = 0; ; j++) {
                             dimBuffer.Add(videoIds[j]);
-                            if (i == calcLimit && j == SurplusCalculate(videoIds.Length)) {
+                            if (i == calcLimit - 1 && j == SurplusCalculate(videoIds.Length)) {
                                 _bundledDimension.Add(i, dimBuffer);
                                 break;
                             }
-                            if (j == 50) {
+                            if (j == 50 - 1) {
                                 _bundledDimension.Add(i, dimBuffer);
                                 break;
                             }

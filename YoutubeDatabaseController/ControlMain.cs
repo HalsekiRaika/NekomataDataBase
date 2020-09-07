@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
 using MongoDB.Driver;
 using Newtonsoft.Json;
-using YoutubeDatabaseController.ChannelDictionary;
 using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
@@ -38,6 +40,7 @@ namespace YoutubeDatabaseController {
             // Send Request to YoutubeAPI.
             LoadedComponent.GetChannelId().ForEach(channelId => {
                 string result = Task.Run(() => YoutubeAPIResponce.requestAsync(httpClient, channelId)).Result;
+                //Thread.Sleep(3000);
                 ListAggregation.SetResultList(result);
             });
             
@@ -57,17 +60,22 @@ namespace YoutubeDatabaseController {
             
             // Result List Re-Initialize.
             ListAggregation.ResultListInit();
+
+            IEnumerable<string> videoIdEnum = ListAggregation.GetVideoIdList().AsEnumerable<string>();
             
             // Because it is possible to save Quota,
             // When I search for 50 items in a batch, I can add 50 VideoId to the Dictionary<page number(int), VideoId(string)> as a lump organized into.
-            ListCombination.VideoId.SetBundledDimension(ListAggregation.GetVideoIdList().ToArray());
-
             // Send Request to YoutubeAPI. (Start Time for ScheduleLive)
-            foreach (KeyValuePair<int, List<string>> bundledValue in ListCombination.VideoId.GetBundledDimension()) {
-                string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, bundledValue.Value.ToArray())).Result;
+            while (videoIdEnum.Any()) {
+                string requestIds = String.Join(",", videoIdEnum.Take<string>(50));
+                foreach (string splitValue in requestIds.Split(",")) {
+                    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {splitValue, 15}");
+                }
+                string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, requestIds)).Result;
                 ListAggregation.SetResultList(startTime);
+                videoIdEnum = videoIdEnum.Skip<string>(50);
             }
-            
+
             // Finish Message
             AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
 

@@ -65,16 +65,15 @@ namespace YoutubeDatabaseController {
             
             List<string> configFolders = _ConfigFolderDir();
             Dictionary<string, string[]>     configFiles = _ConfigFileDir(configFolders);
-            Dictionary<string, ConfigScheme> loadedDict  = new Dictionary<string, ConfigScheme>();
             Dictionary<string, Dictionary<string, ConfigScheme>> groupedDict = new Dictionary<string, Dictionary<string, ConfigScheme>>();
             foreach (KeyValuePair<string, string[]> fileComponent in configFiles) {
-                loadedDict.Clear();
+                Dictionary<string, ConfigScheme> loadedDict  = new Dictionary<string, ConfigScheme>();
                 AlConsole.WriteLine(CONFIG_INFORMATION, $"Parse Group [ {fileComponent.Key.Substring(Settings.ConfigDir.Length)} ]");
                 foreach (string file in fileComponent.Value) {
                     using (StreamReader reader = new StreamReader(file)) {
                         string raw = reader.ReadToEnd();
                         ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
-                        AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", -32} => Parsed!");
+                        AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32} => Parsed!");
                         loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
                     }
                 }
@@ -88,15 +87,15 @@ namespace YoutubeDatabaseController {
 
         // Dictionary<MemberName(string), Dictionary<DataBaseName(string), DBProperty(IMongoCollection<RefactorScheme>)>>
         private static void GenerateDataBaseProperty(MongoClient client, Dictionary<string, Dictionary<string, ConfigScheme>> configComponent) {
-            Dictionary<string, IMongoCollection<RefactorScheme>> collectionsBuf = new Dictionary<string, IMongoCollection<RefactorScheme>>();
             foreach (KeyValuePair<string, Dictionary<string, ConfigScheme>> groupedCorp in configComponent) {
+                Dictionary<string, IMongoCollection<RefactorScheme>> collectionsBuf = new Dictionary<string, IMongoCollection<RefactorScheme>>();
                 IMongoDatabase targetDataBase = client.GetDatabase(groupedCorp.Key);
-                AlConsole.WriteLine(CONFIG_INFORMATION, "-->Generate DataBase Property");
+                AlConsole.WriteLine(CONFIG_INFORMATION, "--> Generate DataBase Property");
                 AlConsole.WriteLine(CONFIG_INFORMATION, $" ┏ DataBase[ {groupedCorp.Key} ]");
                 foreach (KeyValuePair<string, ConfigScheme> configDict in groupedCorp.Value) {
                     IMongoCollection<RefactorScheme> generatedCollection =
                         targetDataBase.GetCollection<RefactorScheme>(configDict.Key);
-                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -16}" + " ]");
+                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -26}" + " ]");
                     collectionsBuf.Add(configDict.Key, generatedCollection);
                     LoadedComponent.SetChannelIdComponent(configDict.Value.ChannelData[0].Details[0].ID.ToString(), configDict.Key);
                     AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
@@ -104,6 +103,10 @@ namespace YoutubeDatabaseController {
                 LoadedComponent.SetCollectionDict(targetDataBase, collectionsBuf);
                 AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
             }
+        }
+
+        private static void _DetectSubChannelProperty() {
+            
         }
 
         private static List<string> _ConfigFolderDir() {

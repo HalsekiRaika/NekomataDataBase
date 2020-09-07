@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Log5RLibs.Services;
 using MongoDB.Driver;
-using YoutubeDatabaseController.ChannelDictionary;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
 
