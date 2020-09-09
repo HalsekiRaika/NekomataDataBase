@@ -50,7 +50,7 @@ namespace YoutubeDatabaseController {
             //});
 
             // Finish Message
-            AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, "Success.");
+            AlConsole.WriteLine(DefaultScheme.RESPONCE_SCHEME, $"Success. Number of Request ({ListAggregation.GetResultList().Count})");
 
             // Youtube Response Json Deserialize
             ListAggregation.GetResultList().ForEach(result => {
@@ -91,14 +91,15 @@ namespace YoutubeDatabaseController {
             // Organize necessary information and put it into a RefactorScheme and store it in List(RefactorScheme).
             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
+            AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブなので以下のものは挿入タスクから除外されます。");
-            AlConsole.WriteLine(SORTLOG_SCHEME, "<====================== 対象 =============================");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             foreach (string lives in SchemeOrthopedy.GetFinishedLives()) {
                 AlConsole.WriteLine(SORTLOG_SCHEME, lives);
             }
-            
+            AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             AlConsole.WriteLine(SORTLOG_SCHEME, "フリーチャット専用枠なので以下のものは挿入タスクから除外されます。");
-            AlConsole.WriteLine(SORTLOG_SCHEME, "<====================== 対象 =============================");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
                 AlConsole.WriteLine(SORTLOG_SCHEME, lives);
             }
