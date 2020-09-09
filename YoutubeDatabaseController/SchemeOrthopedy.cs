@@ -7,12 +7,15 @@ using YoutubeDatabaseController.Util;
 namespace YoutubeDatabaseController {
     public static class SchemeOrthopedy {
         private static List<RefactorScheme> _schemes = new List<RefactorScheme>();
+        private static List<string> finishedLives = new List<string>();
+        private static List<string> freechatLives = new List<string>();
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
                 RefactorScheme refactorScheme = new RefactorScheme() {
                     _id           = GenUuid.Generate(),
                     Title         = itemValue.Key.Snippet.Title,
                     Description   = itemValue.Key.Snippet.Description,
+                    VideoId       = itemValue.Key.Id.VideoId,
                     ChannelName   = itemValue.Key.Snippet.ChannelTitle,
                     ChannelId     = itemValue.Key.Snippet.ChannelId,
                     Thumbnail     = new ThumbnailsData() {
@@ -27,18 +30,24 @@ namespace YoutubeDatabaseController {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
                     } else {
-                        AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "既に終了したライブを検出し、除外しました。");
-                        AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, $"対象：{itemValue.Key.Snippet.Title}");
+                        finishedLives.Add($"[ {itemValue.Key.Id.VideoId} ] => \"{itemValue.Key.Snippet.Title}\"");
                     }
                 } else {
-                    AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, "フリーチャット専用枠を検出し、除外しました。");
-                    AlConsole.WriteLine(DefaultScheme.SORTLOG_SCHEME, $"対象：{itemValue.Key.Snippet.Title}");
+                    freechatLives.Add($"[ {itemValue.Key.Id.VideoId} ] => \"{itemValue.Key.Snippet.Title}\"");
                 }
             }
         }
 
         public static List<RefactorScheme> GetSchemes() {
             return _schemes;
+        }
+
+        public static List<string> GetFinishedLives() {
+            return finishedLives;
+        }
+
+        public static List<string> GetFreeChatLives() {
+            return freechatLives;
         }
     }
 }

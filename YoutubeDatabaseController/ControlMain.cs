@@ -91,6 +91,18 @@ namespace YoutubeDatabaseController {
             // Organize necessary information and put it into a RefactorScheme and store it in List(RefactorScheme).
             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
+            AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブなので以下のものは挿入タスクから除外されます。");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "<====================== 対象 =============================");
+            foreach (string lives in SchemeOrthopedy.GetFinishedLives()) {
+                AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            }
+            
+            AlConsole.WriteLine(SORTLOG_SCHEME, "フリーチャット専用枠なので以下のものは挿入タスクから除外されます。");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "<====================== 対象 =============================");
+            foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
+                AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            }
+
             // Serialize the organized information.
             SchemeOrthopedy.GetSchemes().ForEach(i => {
                 serializedObject.Add(JsonConvert.SerializeObject(i));
