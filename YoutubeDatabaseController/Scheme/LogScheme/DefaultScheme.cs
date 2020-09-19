@@ -20,6 +20,7 @@ namespace YoutubeDatabaseController.Scheme.LogScheme {
         public static readonly AlCConfigScheme REQUEST_SCHEME         = new AlCConfigScheme(0, "Requesting...  ", YOUTUBE_API);
         public static readonly AlCConfigScheme RESPONCE_SCHEME        = new AlCConfigScheme(0, "Response!      ", YOUTUBE_API);
         public static readonly AlCConfigScheme SORTLOG_SCHEME         = new AlCConfigScheme(0, null, SORTED);
+        public static readonly AlCConfigScheme SORTLOG_WARN_SCHEME    = new AlCConfigScheme(2, null, SORTED);
         public static readonly AlCConfigScheme SERIALIZELOG_SCHEME    = new AlCConfigScheme(0, null, SERIALIZE);
         public static readonly AlCConfigScheme DB_INITIALIZE_SCHEME   = new AlCConfigScheme(0, null, DB_INITIALIZE);
         public static readonly AlCConfigScheme DB_IN_DATA_SCHEME_STBY = new AlCConfigScheme(0, "Stand By...    ", DB_INSERT_DATA);

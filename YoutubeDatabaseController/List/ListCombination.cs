@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
+using YoutubeDatabaseController.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController.List {
     public static class ListCombination {
@@ -54,7 +57,11 @@ namespace YoutubeDatabaseController.List {
         
             public static void SetBundleDict(Dictionary<string, Item> dictJsonScheme, Dictionary<string, ExtendItem> dictExtendItem) {
                 foreach (KeyValuePair<string, Item> value in dictJsonScheme) {
-                    _bundleDictionary.Add(value.Value, dictExtendItem[value.Key]);
+                    try {
+                        _bundleDictionary.Add(value.Value, dictExtendItem[value.Key]);
+                    } catch (Exception e) {
+                        AlConsole.WriteLine(DefaultScheme.SORTLOG_WARN_SCHEME, "結合する辞書内に対応する値が見つかりません。");
+                    }
                 }
             }
 
