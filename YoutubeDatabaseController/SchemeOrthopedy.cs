@@ -19,9 +19,9 @@ namespace YoutubeDatabaseController {
                     ChannelName   = itemValue.Key.Snippet.ChannelTitle,
                     ChannelId     = itemValue.Key.Snippet.ChannelId,
                     Thumbnail     = new ThumbnailsData() {
-                        Url       = itemValue.Key.Snippet.Thumbnails.Default.Url,
-                        Height    = itemValue.Key.Snippet.Thumbnails.Default.Height.ToString(),
-                        Width     = itemValue.Key.Snippet.Thumbnails.Default.Width.ToString()
+                        Url       = itemValue.Key.Snippet.Thumbnails.Medium.Url,
+                        Height    = itemValue.Key.Snippet.Thumbnails.Medium.Height.ToString(),
+                        Width     = itemValue.Key.Snippet.Thumbnails.Medium.Width.ToString()
                     },
                     StartTime     = itemValue.Value.Details.ScheduledStartTime,
                     Publish       = itemValue.Key.Snippet.PublishTime.ToString(),
