@@ -15,7 +15,7 @@ namespace YoutubeDatabaseController {
         public static readonly string AniMare = "Animare";
         
         // Server
-        public static readonly string NekomataAws   = "ec2-3-91-37-39.compute-1.amazonaws.com";
+        public static readonly string NekomataAws   = "18.210.220.130";
         public static readonly string NekomataLocal = "192.168.0.5";
 
         // Config Dir
