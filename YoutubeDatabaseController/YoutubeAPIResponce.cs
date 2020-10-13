@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Log5RLibs.Services;
+using RetryExecutor;
 using YoutubeDatabaseController.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController {
@@ -29,10 +30,12 @@ namespace YoutubeDatabaseController {
                 .AddQuery("id", videoIds);
                 //.AddArrayQuery("id", videoId);
             AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
+            string res = ReSpell.Execute(5, 5, 
+                () => client.GetStringAsync(url).Result, () => AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Retry Request..."));
             //foreach (string value in videoId) {
             //    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
             //}
-            return await client.GetStringAsync(url);
+            return res;
         }
 
         private static string getToken() {

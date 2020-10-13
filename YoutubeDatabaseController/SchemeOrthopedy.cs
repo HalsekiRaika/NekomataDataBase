@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -11,6 +12,9 @@ namespace YoutubeDatabaseController {
         private static List<string> freechatLives = new List<string>();
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
+                if (itemValue.Key == null || itemValue.Value == null) {
+                    continue;
+                }
                 RefactorScheme refactorScheme = new RefactorScheme() {
                     _id           = GenUuid.Generate(),
                     Title         = itemValue.Key.Snippet.Title,
@@ -19,9 +23,9 @@ namespace YoutubeDatabaseController {
                     ChannelName   = itemValue.Key.Snippet.ChannelTitle,
                     ChannelId     = itemValue.Key.Snippet.ChannelId,
                     Thumbnail     = new ThumbnailsData() {
-                        Url       = itemValue.Key.Snippet.Thumbnails.Medium.Url,
-                        Height    = itemValue.Key.Snippet.Thumbnails.Medium.Height.ToString(),
-                        Width     = itemValue.Key.Snippet.Thumbnails.Medium.Width.ToString()
+                        Url       = new Uri($"https://i.ytimg.com/vi/{itemValue.Key.Id.VideoId}/maxresdefault_live.jpg"), //itemValue.Key.Snippet.Thumbnails.Medium.Url,
+                        Height    = "641", //itemValue.Key.Snippet.Thumbnails.Medium.Height.ToString(),
+                        Width     = "361"  //itemValue.Key.Snippet.Thumbnails.Medium.Width.ToString()
                     },
                     StartTime     = itemValue.Value.Details.ScheduledStartTime,
                     Publish       = itemValue.Key.Snippet.PublishTime.ToString(),
