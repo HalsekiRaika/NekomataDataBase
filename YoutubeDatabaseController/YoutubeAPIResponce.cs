@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Log5RLibs.Services;
 using RetryExecutor;
+using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController {
@@ -18,8 +19,17 @@ namespace YoutubeDatabaseController {
                 .AddQuery("type", "video")
                 .AddQuery("eventType", "upcoming")
                 .AddQuery("key", getToken());
-            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString().Substring(0, 129) + "[SECRET TOKEN]");
+            // AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString().Substring(0, 129) + "[SECRET TOKEN]");
+            AlExtension.ColorizeWrite(DefaultScheme.REQUEST_SCHEME, $"情報をリクエスト ^: ^ChannelId [ ^{channelId, -16} ^] / ",
+                new [] {ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta});
             string result = await client.GetStringAsync(url);
+            ReSpell.Execute(5, 5, 
+                () => client.GetStringAsync(url).Result, 
+                () => {
+                    Console.Write("Retry");
+                    Console.CursorLeft = 5;
+                });
+            Console.WriteLine("Success.");
             return result;
         }
 
@@ -29,8 +39,7 @@ namespace YoutubeDatabaseController {
                 .AddQuery("key", getToken())
                 .AddQuery("id", videoIds);
                 //.AddArrayQuery("id", videoId);
-            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
-            string res = ReSpell.Execute(5, 5, 
+                string res = ReSpell.Execute(5, 5, 
                 () => client.GetStringAsync(url).Result, () => AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Retry Request..."));
             //foreach (string value in videoId) {
             //    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
@@ -52,8 +61,9 @@ namespace YoutubeDatabaseController {
             NameValueCollection collection = HttpUtility.ParseQueryString(uri.Query);
             collection.Remove(key);
             collection.Add(key, value);
-            UriBuilder builtUrl = new UriBuilder(uri);
-            builtUrl.Query = collection.ToString();
+            UriBuilder builtUrl = new UriBuilder(uri) {
+                Query = collection.ToString(),
+            };
             return builtUrl.Uri;
         }
 
@@ -61,8 +71,9 @@ namespace YoutubeDatabaseController {
             NameValueCollection collection = HttpUtility.ParseQueryString(uri.Query);
             collection.Remove(key);
             collection.Add(key, ArrayToString(valueArray));
-            UriBuilder builtUrl = new UriBuilder(uri);
-            builtUrl.Query = collection.ToString();
+            UriBuilder builtUrl = new UriBuilder(uri) {
+                Query = collection.ToString(),
+            };
             return builtUrl.Uri;
         }
 

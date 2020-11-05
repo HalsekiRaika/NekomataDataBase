@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Log5RLibs.Services;
 using MongoDB.Driver;
+using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.LogScheme;
 
@@ -11,16 +13,18 @@ namespace YoutubeDatabaseController {
             AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化を開始します。");
 
             foreach (KeyValuePair<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> collection in LoadedComponent.GetAllCollections()) {
-                AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┏ DataBase  : {collection.Key.DatabaseNamespace.DatabaseName}");
+                AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┏ ^DataBase  ^: ^{collection.Key.DatabaseNamespace.DatabaseName}",
+                    new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta});
+                // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┏ DataBase  : {collection.Key.DatabaseNamespace.DatabaseName}");
                 foreach (KeyValuePair<string, IMongoCollection<RefactorScheme>> collectionDict in collection.Value) {
                     Initialization(collection.Key, collectionDict.Key);
                 }
             }
-            
-            //ProductionHoloLive.GetAllValue().ForEach(init => Initialization(databaseHololive, init));
 
-            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┗ 全ての初期化が終了しました。");
+            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┗ ^全ての初期化が終了しました。", 
+                new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
             
+            // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┗ 全ての初期化が終了しました。");
             AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化しました。");
             
             // Start Insert Data
@@ -32,17 +36,7 @@ namespace YoutubeDatabaseController {
             
             schemeList.ForEach(schemes => {
                 string searchedObject = LoadedComponent.GetDataBaseName(schemes.ChannelId); //ProductionHoloLive.GetChannelName(schemes.ChannelId);
-                
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, "以下のデータをコレクションに格納します。");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $"生放送予定枠：");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => UUID          : {schemes._id}");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => タイトル　　  ：{schemes.Title}");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネル名  ：{schemes.ChannelName}");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" => チャンネルID　：{schemes.ChannelId}");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ================================================ ");
-                AlConsole.WriteLine(DefaultScheme.DB_IN_DATA_SCHEME_STBY, $" ");
-                
+                AlExtension.ExpandWrite(schemes);
                 //collections[searchedObject].InsertOne(schemes);
                 LoadedComponent.GetCollection()[searchedObject].InsertOne(schemes);
                 
@@ -51,10 +45,13 @@ namespace YoutubeDatabaseController {
         }
 
         private static void Initialization(IMongoDatabase db, string targetCollection) {
-            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┃ 対象のコレクションを初期化します。");
-            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ Collection: {targetCollection}");
+            AlExtension.ColorizeWrite(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ ^Init Collection: ^{targetCollection, -20} ", 
+                new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
+            // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ Init Collection: {targetCollection}");
             db.DropCollection(targetCollection);
-            AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┃  ┗ 初期化しました。");
+            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"/ ^初期化しました。", 
+                new [] {ConsoleColor.DarkGray, ConsoleColor.DarkBlue, ConsoleColor.DarkGreen}, false);
+            // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┃  ┗ 初期化しました。");
         }
 
     }

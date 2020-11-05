@@ -13,7 +13,8 @@ namespace YoutubeDatabaseController {
     #region LOADED_COMPONENT
     public static class LoadedComponent {
         private static Dictionary<string, IMongoCollection<RefactorScheme>> _collections = new Dictionary<string, IMongoCollection<RefactorScheme>>();
-        private static Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> _collection = new Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>>();
+        private static readonly Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> _collection 
+            = new Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>>();
         private static Dictionary<string, string> _channelIdComponent = new Dictionary<string, string>();
 
         public static void SetCollectionDict(IMongoDatabase database, Dictionary<string, IMongoCollection<RefactorScheme>> targetCollection) {
@@ -61,26 +62,31 @@ namespace YoutubeDatabaseController {
     #endregion
     public static class ConfigLoader {
         public static void OnLoadEvent(MongoClient client) {
-            AlConsole.WriteLine(CONFIG_INFORMATION, "-> First Initialization.");
-            
+            AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, "-->^ FIRST INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
+
             List<string> configFolders = _ConfigFolderDir();
-            Dictionary<string, string[]>     configFiles = _ConfigFileDir(configFolders);
+            Dictionary<string, string[]> configFiles = _ConfigFileDir(configFolders);
             Dictionary<string, Dictionary<string, ConfigScheme>> groupedDict = new Dictionary<string, Dictionary<string, ConfigScheme>>();
             foreach (KeyValuePair<string, string[]> fileComponent in configFiles) {
                 Dictionary<string, ConfigScheme> loadedDict  = new Dictionary<string, ConfigScheme>();
-                AlConsole.WriteLine(CONFIG_INFORMATION, $"Parse Group [ {fileComponent.Key.Substring(Settings.ConfigDir.Length)} ]");
+                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"Parse Group [ ^{fileComponent.Key.Substring(Settings.ConfigDir.Length)}^ ]", 
+                    new []{ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
+                // AlConsole.WriteLine(CONFIG_INFORMATION, $"Parse Group [ {fileComponent.Key.Substring(Settings.ConfigDir.Length)} ]");
                 foreach (string file in fileComponent.Value) {
                     using (StreamReader reader = new StreamReader(file)) {
                         string raw = reader.ReadToEnd();
                         ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
-                        AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32} => Parsed!");
+                        AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32}^ => Parsed!",
+                            new [] {ConsoleColor.Magenta, ConsoleColor.Green});
+                        // AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32} => Parsed!");
                         loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
                     }
                 }
                 groupedDict.Add(fileComponent.Key.Substring(Settings.ConfigDir.Length), loadedDict);
             }
             AlConsole.WriteLine(CONFIG_INFORMATION, $"Loaded All Config Operational!");
-            AlConsole.WriteLine(CONFIG_INFORMATION, "-> Second Initialization.");
+            AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, "-->^ SECOND INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
+            // AlConsole.WriteLine(CONFIG_INFORMATION, "-> Second Initialization.");
             GenerateDataBaseProperty(client, groupedDict);
             AlConsole.WriteLine(CONFIG_INFORMATION, $"Generated DataBase Property from Loaded Config.");
         }
@@ -90,18 +96,27 @@ namespace YoutubeDatabaseController {
             foreach (KeyValuePair<string, Dictionary<string, ConfigScheme>> groupedCorp in configComponent) {
                 Dictionary<string, IMongoCollection<RefactorScheme>> collectionsBuf = new Dictionary<string, IMongoCollection<RefactorScheme>>();
                 IMongoDatabase targetDataBase = client.GetDatabase(groupedCorp.Key);
-                AlConsole.WriteLine(CONFIG_INFORMATION, "--> Generate DataBase Property");
-                AlConsole.WriteLine(CONFIG_INFORMATION, $" ┏ DataBase[ {groupedCorp.Key} ]");
+                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, " => Generate DataBase Property", 
+                    new [] {ConsoleColor.Cyan, ConsoleColor.Green});
+                // AlConsole.WriteLine(CONFIG_INFORMATION, " => Generate DataBase Property");
+                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" ┏ ^DataBase[ ^{groupedCorp.Key} ^]", 
+                    new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
+                // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┏ DataBase[ {groupedCorp.Key} ]");
                 foreach (KeyValuePair<string, ConfigScheme> configDict in groupedCorp.Value) {
                     IMongoCollection<RefactorScheme> generatedCollection =
                         targetDataBase.GetCollection<RefactorScheme>(configDict.Key);
-                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -26}" + " ]");
+                    AlExtension.ColorizeWrite(CONFIG_INFORMATION, " ┣ ^Collection[ ^" + $"{configDict.Key, -26}" + " ^]",
+                        new [] {ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta});
+                    // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -26}" + " ]");
                     collectionsBuf.Add(configDict.Key, generatedCollection);
                     LoadedComponent.SetChannelIdComponent(configDict.Value.ChannelData[0].Details[0].ID.ToString(), configDict.Key);
-                    AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
+                    AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" / ^ChannelId[ " + $"^{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ^]",
+                        new [] {ConsoleColor.DarkGray, ConsoleColor.DarkMagenta, ConsoleColor.DarkCyan, ConsoleColor.DarkMagenta}, false);
+                    // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
                 }
                 LoadedComponent.SetCollectionDict(targetDataBase, collectionsBuf);
-                AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
+                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" ┗ ^[ EOT ]", new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
+                // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
             }
         }
 
@@ -123,7 +138,9 @@ namespace YoutubeDatabaseController {
             List<string> detectDirNames = Directory.GetDirectories(Settings.ConfigDir).ToList<string>();
             detectDirNames.Remove($"{Settings.ConfigDir}.git");
             foreach (string detectName in detectDirNames) {
-                AlConsole.WriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> [ {detectName, -18} ]");
+                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> ^[ {detectName, -18} ]",
+                    new [] {ConsoleColor.Green, ConsoleColor.Blue});
+                // AlConsole.WriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> [ {detectName, -18} ]");
             }
 
             return detectDirNames;

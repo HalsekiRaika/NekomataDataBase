@@ -8,8 +8,8 @@ using YoutubeDatabaseController.Util;
 namespace YoutubeDatabaseController {
     public static class SchemeOrthopedy {
         private static List<RefactorScheme> _schemes = new List<RefactorScheme>();
-        private static List<string> finishedLives = new List<string>();
-        private static List<string> freechatLives = new List<string>();
+        private static Dictionary<string, string> finishedLivesDict = new Dictionary<string, string>();
+        private static Dictionary<string, string> freechatLivesDict = new Dictionary<string, string>();
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
                 if (itemValue.Key == null || itemValue.Value == null) {
@@ -34,10 +34,10 @@ namespace YoutubeDatabaseController {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
                     } else {
-                        finishedLives.Add($"[ {itemValue.Key.Id.VideoId} ] => \"{itemValue.Key.Snippet.Title}\"");
+                        finishedLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
                     }
                 } else {
-                    freechatLives.Add($"[ {itemValue.Key.Id.VideoId} ] => \"{itemValue.Key.Snippet.Title}\"");
+                    freechatLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
                 }
             }
         }
@@ -46,12 +46,12 @@ namespace YoutubeDatabaseController {
             return _schemes;
         }
 
-        public static List<string> GetFinishedLives() {
-            return finishedLives;
+        public static Dictionary<string, string> GetFinishedLivesDict() {
+            return finishedLivesDict;
         }
 
-        public static List<string> GetFreeChatLives() {
-            return freechatLives;
+        public static Dictionary<string, string> GetFreeChatLivesDict() {
+            return freechatLivesDict;
         }
     }
 }

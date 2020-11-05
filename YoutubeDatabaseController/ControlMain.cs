@@ -66,12 +66,24 @@ namespace YoutubeDatabaseController {
             // Because it is possible to save Quota,
             // When I search for 50 items in a batch, I can add 50 VideoId to the Dictionary<page number(int), VideoId(string)> as a lump organized into.
             // Send Request to YoutubeAPI. (Start Time for ScheduleLive)
+            AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Extend Information Request...");
             while (videoIdEnum.Any()) {
                 string requestIds = String.Join(",", videoIdEnum.Take<string>(50));
-                foreach (string splitValue in requestIds.Split(",")) {
-                    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {splitValue, 15}");
-                }
+                string[] sliced = videoIdEnum.ToArray<string>();
                 string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, requestIds)).Result;
+                for (int i = 0; i < (sliced.Length % 50 > 0 ? sliced.Length / 50 + 1 : sliced.Length / 50); i++) {
+                    for (int j = 0; j < 5; j++) {
+                        AlExtension.ColorizeWrite(REQUEST_SCHEME, $"  #-- ^[ ", new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
+                        AlExtension.ColorizeWrite(REQUEST_SCHEME, String.Join(", ", sliced.Take(5)), 
+                            new [] {ConsoleColor.Magenta}, false);
+                        AlExtension.ColorizeWriteLine(REQUEST_SCHEME, $" ]", new [] {ConsoleColor.Green}, false);
+                        sliced = sliced.Skip<string>(5).ToArray();
+                    }
+                }
+                // foreach (string splitValue in requestIds.Split(",")) {
+                //     AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {splitValue, 15}");
+                // }
+                // string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, requestIds)).Result;
                 ListAggregation.SetResultList(startTime);
                 videoIdEnum = videoIdEnum.Skip<string>(50);
             }
@@ -92,17 +104,28 @@ namespace YoutubeDatabaseController {
             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
             AlConsole.WriteLine(SORTLOG_SCHEME, " ");
-            AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブなので以下のものは挿入タスクから除外されます。");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブ : 以下のものは挿入タスクから除外されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
-            foreach (string lives in SchemeOrthopedy.GetFinishedLives()) {
-                AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetFinishedLivesDict()) {
+                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                    new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
+            
+            // foreach (string lives in SchemeOrthopedy.GetFinishedLives()) {
+            //     AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            // }
+            
             AlConsole.WriteLine(SORTLOG_SCHEME, " ");
-            AlConsole.WriteLine(SORTLOG_SCHEME, "フリーチャット専用枠なので以下のものは挿入タスクから除外されます。");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "フリーチャット専用枠 : 以下のものは挿入タスクから除外されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
-            foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
-                AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetFreeChatLivesDict()) {
+                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                    new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
+            
+            // foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
+            //     AlConsole.WriteLine(SORTLOG_SCHEME, lives);
+            // }
 
             // Serialize the organized information.
             SchemeOrthopedy.GetSchemes().ForEach(i => {
