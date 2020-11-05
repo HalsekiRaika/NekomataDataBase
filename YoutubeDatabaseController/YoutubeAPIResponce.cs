@@ -20,14 +20,17 @@ namespace YoutubeDatabaseController {
                 .AddQuery("eventType", "upcoming")
                 .AddQuery("key", getToken());
             // AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString().Substring(0, 129) + "[SECRET TOKEN]");
-            AlExtension.ColorizeWrite(DefaultScheme.REQUEST_SCHEME, $"情報をリクエスト ^: ^ChannelId [ ^{channelId, -16} ^] / ",
-                new [] {ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta});
-            string result = await client.GetStringAsync(url);
-            ReSpell.Execute(5, 5, 
+            AlExtension.ColorizeWrite(DefaultScheme.REQUEST_SCHEME, $"情報をリクエスト ^: ^ChannelId [ ^{channelId, -16} ^] ^/ ",
+                new [] {ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.DarkGray});
+            string result = ReSpell.Execute(5, 5, 
                 () => client.GetStringAsync(url).Result, 
-                () => {
-                    Console.Write("Retry");
-                    Console.CursorLeft = 5;
+                (c) => {
+                    Console.Write($"Retry ({c})");
+                    Console.CursorLeft = 124;
+                }, (c) => {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Failure  \n");
+                    Console.ResetColor();
                 });
             Console.WriteLine("Success.");
             return result;
@@ -40,7 +43,8 @@ namespace YoutubeDatabaseController {
                 .AddQuery("id", videoIds);
                 //.AddArrayQuery("id", videoId);
                 string res = ReSpell.Execute(5, 5, 
-                () => client.GetStringAsync(url).Result, () => AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, "Retry Request..."));
+                () => client.GetStringAsync(url).Result, 
+                (c) => AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"Retry Request... [ Count: {c}]"));
             //foreach (string value in videoId) {
             //    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
             //}

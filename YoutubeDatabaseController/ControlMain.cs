@@ -20,6 +20,7 @@ namespace YoutubeDatabaseController {
         private static MongoClient _mongoClient;
         
         static void Main(string[] args) {
+            Console.CursorVisible = false;
             AlExtension.ArrayWrite(START_UP, Settings.Startup);
 
             ArgumentParser.Decomposition(args);
