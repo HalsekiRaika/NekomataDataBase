@@ -5,8 +5,10 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
+using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using RetryExecutor;
 using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
@@ -102,9 +104,19 @@ namespace YoutubeDatabaseController {
             ListCombination.Scheme.SetBundleDict(ListAggregation.GetJsonSchemeList(), ListAggregation.GetTimeScheme());
 
             // Organize necessary information and put it into a RefactorScheme and store it in List(RefactorScheme).
-            SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
+            /*
+            ReSpell.Execute(5, 5, 
+                () => { SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict()); }, (count) => {
+                    AlConsole.Write(AlStatusEnum.Caution, $"{"TASK RESUMED", -15}", $"{"Data Bundler", -15}",
+                        "Failed to execute the task. Task will try again.");
+                    Console.CursorLeft = 0;
+                }, (count) => {
+                    AlConsole.WriteLine(AlStatusEnum.Error, $"{"TASK FAILURE", -15}", $"{"Data Bundler", -15}", 
+                        $"Failed to execute the task. TryCount: {count, -10}\n");
+                }); */
+             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
-            AlConsole.WriteLine(SORTLOG_SCHEME, " ");
+            AlConsole.WriteLine(SORTLOG_SCHEME, $"{" ", -63}");
             AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブ : 以下のものは挿入タスクから除外されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetFinishedLivesDict()) {
