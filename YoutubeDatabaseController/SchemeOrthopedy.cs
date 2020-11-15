@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
-using YoutubeDatabaseController.Scheme.LogScheme;
+using YoutubeDatabaseController.Scheme.Builder;
 using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
@@ -15,6 +14,20 @@ namespace YoutubeDatabaseController {
                 if (itemValue.Key == null || itemValue.Value == null) {
                     continue;
                 }
+
+                RefactorScheme refactorScheme = RefactorBuilder.Define
+                    .SetTitle(itemValue.Key.Snippet.Title)
+                    .SetDescription(itemValue.Key.Snippet.Description)
+                    .SetVideoId(itemValue.Key.Id.VideoId)
+                    .SetChannelId(itemValue.Key.Snippet.ChannelId)
+                    .SetChannelName(itemValue.Key.Snippet.ChannelTitle)
+                    .SetPublish(itemValue.Key.Snippet.PublishTime.ToString())
+                    .SetStartTime(itemValue.Value.Details.ScheduledStartTime)
+                    .SetThumbnailData(
+                        ThumbnailDataBuilder.Define.SetUrl(new Uri($"https://i.ytimg.com/vi/{itemValue.Key.Id.VideoId}/maxresdefault_live.jpg")).Build())
+                    .Build();
+                
+                /*
                 RefactorScheme refactorScheme = new RefactorScheme() {
                     _id           = GenUuid.Generate(),
                     Title         = itemValue.Key.Snippet.Title,
@@ -30,6 +43,7 @@ namespace YoutubeDatabaseController {
                     StartTime     = itemValue.Value.Details.ScheduledStartTime,
                     Publish       = itemValue.Key.Snippet.PublishTime.ToString(),
                 };
+                */
                 if (!LiveCheck.IsFreeChat(itemValue.Key)) {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
