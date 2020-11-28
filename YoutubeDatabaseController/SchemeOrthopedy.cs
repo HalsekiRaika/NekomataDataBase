@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Log5RLibs.Services;
+using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.Builder;
 using YoutubeDatabaseController.Scheme.LogScheme;
@@ -19,8 +20,10 @@ namespace YoutubeDatabaseController {
                     continue;
                     // TODO : コラボ動画の追加処理を考える。
                 }
-                AlConsole.Write(DefaultScheme.CONTROLLER, 
-                    $"({count, 3}/{bundleScheme.Count}) [ {itemValue.Key.Id.VideoId} ] キューに追加しています…");
+                
+                AlExtension.ColorizeWrite(
+                    DefaultScheme.CONTROLLER, $"({count, 3}/{bundleScheme.Count}) ^[ ^{itemValue.Key.Id.VideoId} ^] キューに追加しています / ",
+                    new [] {ConsoleColor.White, ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green});
                 RefactorScheme refactorScheme = RefactorBuilder.Define
                     .SetTitle(itemValue.Key.Snippet.Title)
                     .SetDescription(itemValue.Key.Snippet.Description)
@@ -33,6 +36,7 @@ namespace YoutubeDatabaseController {
                         ThumbnailDataBuilder.Define.SetUrl(new Uri($"https://i.ytimg.com/vi/{itemValue.Key.Id.VideoId}/maxresdefault_live.jpg")).Build())
                     .Build();
                 
+                Console.Write("Validate... ");
                 /*
                 RefactorScheme refactorScheme = new RefactorScheme() {
                     _id           = GenUuid.Generate(),
@@ -50,6 +54,7 @@ namespace YoutubeDatabaseController {
                     Publish       = itemValue.Key.Snippet.PublishTime.ToString(),
                 };
                 */
+                
                 if (!LiveCheck.IsFreeChat(itemValue.Key)) {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
@@ -64,7 +69,7 @@ namespace YoutubeDatabaseController {
                     freechatLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
                 }
                 
-                Console.WriteLine("完了。");
+                Console.WriteLine("/ Finished");
                 count++;
             }
         }

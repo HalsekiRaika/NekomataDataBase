@@ -13,6 +13,9 @@ namespace YoutubeDatabaseController.Util {
 
         public static bool IsFinishedLive(RefactorScheme scheme) {
             if (string.IsNullOrEmpty(scheme.StartTime)) {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write(": WARNING - 開始時間を参照できません。終了していないライブとして処理します。 ");
+                Console.ResetColor();
                 return false;
             }
             DateTime time = DateTime.Parse(scheme.StartTime);
