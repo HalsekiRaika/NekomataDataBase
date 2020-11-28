@@ -61,6 +61,7 @@ namespace YoutubeDatabaseController.List {
                         _bundleDictionary.Add(value.Value, dictExtendItem[value.Key]);
                     } catch (Exception e) {
                         AlConsole.WriteLine(DefaultScheme.SORTLOG_WARN_SCHEME, "結合する辞書内に対応する値が見つかりません。");
+                        continue;
                     }
                 }
             }

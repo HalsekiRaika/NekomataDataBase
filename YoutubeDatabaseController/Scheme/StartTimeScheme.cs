@@ -24,6 +24,10 @@ namespace YoutubeDatabaseController.Scheme {
     }
     
     public partial class LiveStreamingDetails {
+        [JsonProperty("actualStartTime")] 
+        public string ActualStartTime { get; set; } = "";
+        [JsonProperty("actualEndTime")] 
+        public string ActualEndTime { get; set; } = "";
         [JsonProperty("scheduledStartTime")]
         public string ScheduledStartTime { get; set; }
         [JsonProperty("activeLiveChatId")]

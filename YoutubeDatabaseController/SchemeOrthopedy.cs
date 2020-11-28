@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.Builder;
+using YoutubeDatabaseController.Scheme.LogScheme;
 using YoutubeDatabaseController.Util;
 
 namespace YoutubeDatabaseController {
     public static class SchemeOrthopedy {
         private static List<RefactorScheme> _schemes = new List<RefactorScheme>();
+        private static Dictionary<string, string> LazyLivesDict     = new Dictionary<string, string>();
         private static Dictionary<string, string> finishedLivesDict = new Dictionary<string, string>();
         private static Dictionary<string, string> freechatLivesDict = new Dictionary<string, string>();
+        private static int count = 0;
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
-                if (itemValue.Key == null || itemValue.Value == null) {
+                if (itemValue.Key.Snippet == null || itemValue.Value.Details == null) {
                     continue;
+                    // TODO : コラボ動画の追加処理を考える。
                 }
-
+                AlConsole.Write(DefaultScheme.CONTROLLER, 
+                    $"({count, 3}/{bundleScheme.Count}) [ {itemValue.Key.Id.VideoId} ] キューに追加しています…");
                 RefactorScheme refactorScheme = RefactorBuilder.Define
                     .SetTitle(itemValue.Key.Snippet.Title)
                     .SetDescription(itemValue.Key.Snippet.Description)
@@ -48,11 +54,18 @@ namespace YoutubeDatabaseController {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
                     } else {
+                        if(LiveCheck.IsLazyLive(itemValue.Value)) {
+                            _schemes.Add(refactorScheme);
+                            LazyLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
+                        }
                         finishedLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
                     }
                 } else {
                     freechatLivesDict.Add(itemValue.Key.Id.VideoId, itemValue.Key.Snippet.Title);
                 }
+                
+                Console.WriteLine("完了。");
+                count++;
             }
         }
 
@@ -66,6 +79,10 @@ namespace YoutubeDatabaseController {
 
         public static Dictionary<string, string> GetFreeChatLivesDict() {
             return freechatLivesDict;
+        }
+
+        public static Dictionary<string, string> GetLazyLivesDict() {
+            return LazyLivesDict;
         }
     }
 }

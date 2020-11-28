@@ -136,6 +136,16 @@ namespace YoutubeDatabaseController {
                     new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
             
+            AlConsole.WriteLine(SORTLOG_SCHEME, " ");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "遅刻ライブ : 以下のものは挿入タスクに追加されます。");
+            AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
+            foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetLazyLivesDict()) {
+                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                    new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
+            }
+            
+            
+            AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             // foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
             //     AlConsole.WriteLine(SORTLOG_SCHEME, lives);
             // }

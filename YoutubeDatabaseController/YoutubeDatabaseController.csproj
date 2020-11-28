@@ -12,12 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Libs" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="Log5RLibs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\NekomataResponseServer\NekomataResponseServer\Libs\Log5RLibs.dll</HintPath>
+        <HintPath>F:\CSharpUtilProject\Log5RLibs\Log5RLibs\Log5RLibs\bin\Release\netcoreapp3.1\Log5RLibs.dll</HintPath>
       </Reference>
       <Reference Include="RetryExecutor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>Libs\RetryExecutor.dll</HintPath>

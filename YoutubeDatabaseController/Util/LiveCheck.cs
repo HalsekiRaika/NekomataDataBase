@@ -12,8 +12,15 @@ namespace YoutubeDatabaseController.Util {
         }
 
         public static bool IsFinishedLive(RefactorScheme scheme) {
+            if (string.IsNullOrEmpty(scheme.StartTime)) {
+                return false;
+            }
             DateTime time = DateTime.Parse(scheme.StartTime);
             return time.Ticks - DateTime.Now.Ticks < 0;
+        }
+
+        public static bool IsLazyLive(ExtendItem exItem) {
+            return exItem.Details.ActualStartTime == null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Log5RLibs.Services;
+﻿using System;
+using Log5RLibs.Services;
 
 namespace YoutubeDatabaseController.Scheme.LogScheme {
     public static class DefaultScheme {
@@ -13,6 +14,7 @@ namespace YoutubeDatabaseController.Scheme.LogScheme {
         private static readonly string DB_INSERT_DATA  = $"{"DB DataInsert" , MAX_INDEX}";
         
         // Controller
+        
         public static readonly AlCConfigScheme START_UP               = new AlCConfigScheme(0, null, CONTROLLER_RUN);
         public static readonly AlCConfigScheme CONTROLLER             = new AlCConfigScheme(0, null, CONTROLLER_INFO);
 
@@ -29,5 +31,17 @@ namespace YoutubeDatabaseController.Scheme.LogScheme {
         // Config
         public static readonly AlCConfigScheme CONFIG_INFORMATION     = new AlCConfigScheme(0, "Loading...     ", CONFIG_LOADER);
         public static readonly AlCConfigScheme CONFIG_EXCEPTION       = new AlCConfigScheme(3, "StartUp Excp   ", CONFIG_LOADER);
+        
+        // Log5RLibs v2.0 LINE START
+        /*
+        public static readonly AlPreset START_UP = AlPresetBuilder.Define
+            .SetStatusName(CONTROLLER_RUN).SetStatusColor(ConsoleColor.Green)
+            .SetThreadName(CONTROLLER_INFO).SetThreadColor(ConsoleColor.Magenta)
+            .Build();
+
+        public static readonly AlPreset CONTROLLER = AlPresetBuilder.Define
+            .SetStatusName()
+            .Build();
+            */
     }
 }
