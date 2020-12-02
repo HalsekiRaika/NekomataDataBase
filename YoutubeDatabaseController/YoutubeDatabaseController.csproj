@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+      <PackageReference Include="Nett" Version="0.15.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Log5RLibs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>F:\CSharpUtilProject\Log5RLibs\Log5RLibs\Log5RLibs\bin\Release\netcoreapp3.1\Log5RLibs.dll</HintPath>
+      </Reference>
+      <Reference Include="RetryExecutor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>Libs\RetryExecutor.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
