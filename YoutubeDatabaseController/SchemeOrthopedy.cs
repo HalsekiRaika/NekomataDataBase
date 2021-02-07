@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme;
 using YoutubeDatabaseController.Scheme.Builder;
@@ -12,7 +13,7 @@ namespace YoutubeDatabaseController {
         private static readonly Dictionary<string, string> LazyLivesDict     = new Dictionary<string, string>();
         private static readonly Dictionary<string, string> finishedLivesDict = new Dictionary<string, string>();
         private static readonly Dictionary<string, string> freechatLivesDict = new Dictionary<string, string>();
-        private static bool INeedAdditionalData = false;
+        private static bool _needAdditionalData = false;
         private static int count = 0;
         public static void BundleModification(Dictionary<Item, ExtendItem> bundleScheme) {
             foreach (KeyValuePair<Item, ExtendItem> itemValue in bundleScheme) {
@@ -21,7 +22,7 @@ namespace YoutubeDatabaseController {
                 ExtendItem exItem;
                 
                 if (itemValue.Key.Snippet == null || itemValue.Value.Details == null) {
-                    INeedAdditionalData = true;
+                    _needAdditionalData = true;
                     Settings.CautData += 1;
                     continue;
                     // TODO : コラボ動画の追加処理を考える。
@@ -30,12 +31,12 @@ namespace YoutubeDatabaseController {
                     exItem = itemValue.Value;
                 }
                 
-                if (INeedAdditionalData) {
+                if (_needAdditionalData) {
                     
                 }
                 
                 AlExtension.ColorizeWrite(
-                    DefaultScheme.CONTROLLER, $"({count, 3}/{bundleScheme.Count}) ^[ ^{itemValue.Key.Id.VideoId} ^] キューに追加しています / ",
+                    DefaultScheme.CONTROLLER, $"({count+1, 3}/{bundleScheme.Count}) ^[ ^{itemValue.Key.Id.VideoId} ^] キューに追加しています / ",
                     new [] {ConsoleColor.White, ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green});
                 RefactorScheme refactorScheme = RefactorBuilder.Define
                     .SetTitle(item.Snippet.Title)

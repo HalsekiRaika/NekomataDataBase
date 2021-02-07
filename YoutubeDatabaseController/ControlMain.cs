@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Log5RLibs.Services;
-using Log5RLibs.utils;
 using MongoDB.Driver;
 using Newtonsoft.Json;
-using RetryExecutor;
 using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
@@ -20,7 +17,7 @@ namespace YoutubeDatabaseController {
     public static class ControlMain {
         private static List<string> serializedObject = new List<string>();
         private static MongoClient _mongoClient;
-        
+        // ReSharper disable all PossibleMultipleEnumeration
         static void Main(string[] args) {
             Console.CursorVisible = false;
             Settings.StartupTime = DateTime.Now;
@@ -115,7 +112,7 @@ namespace YoutubeDatabaseController {
                     AlConsole.WriteLine(AlStatusEnum.Error, $"{"TASK FAILURE", -15}", $"{"Data Bundler", -15}", 
                         $"Failed to execute the task. TryCount: {count, -10}\n");
                 }); */
-             SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
+            SchemeOrthopedy.BundleModification(ListCombination.Scheme.GetBundleDict());
 
             AlConsole.WriteLine(SORTLOG_SCHEME, $"{" ", -63}");
             AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブ : 以下のものは挿入タスクから除外されます。");
@@ -140,12 +137,15 @@ namespace YoutubeDatabaseController {
             AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             AlConsole.WriteLine(SORTLOG_SCHEME, "遅刻ライブ : 以下のものは挿入タスクに追加されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
-            foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetLazyLivesDict()) {
-                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
-                    new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
+            if (SchemeOrthopedy.GetLazyLivesDict().Count != 0) {
+                foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetLazyLivesDict()) {
+                    AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                        new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
+                }
+            } else {
+                AlConsole.WriteLine(SORTLOG_SCHEME, "遅刻ライブはありません。");
             }
-            
-            
+
             AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             // foreach (string lives in SchemeOrthopedy.GetFreeChatLives()) {
             //     AlConsole.WriteLine(SORTLOG_SCHEME, lives);
@@ -163,9 +163,10 @@ namespace YoutubeDatabaseController {
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());
 
             // Controller Task Finish Message
+            long progressTicks = DateTime.Now.Ticks - Settings.StartupTime.Ticks;
             AlConsole.WriteLine(CONTROLLER, 
-                $"Task Finished ! / {DateTime.Now.Ticks - Settings.StartupTime.Ticks} Ticks" +
-                $" ({DateTime.Now.Second - Settings.StartupTime.Second} Sec)"
+                $"Task Finished ! / {progressTicks} Ticks" +
+                $" ({TimeSpan.FromTicks(progressTicks).Seconds} Sec)"
             );
             AlConsole.WriteLine(CONTROLLER, $"Number of Scheduled Live => {SchemeOrthopedy.GetSchemes().Count}");
             AlConsole.WriteLine(CONTROLLER, $"             Usage Quota => {Settings.UseQuota}");

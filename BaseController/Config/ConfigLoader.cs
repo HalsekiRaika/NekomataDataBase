@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BaseController;
+using BaseController.Extension;
+using BaseController.Structure;
+using BaseController.Logging;
 using Log5RLibs.Services;
 using MongoDB.Driver;
 using Nett;
-using YoutubeDatabaseController.Extension;
 using YoutubeDatabaseController.Scheme;
-using static YoutubeDatabaseController.Scheme.LogScheme.DefaultScheme;
 
-namespace YoutubeDatabaseController {
+namespace BaseController.Config {
     #region LOADED_COMPONENT
     public static class LoadedComponent {
         private static Dictionary<string, IMongoCollection<RefactorScheme>> _collections = new Dictionary<string, IMongoCollection<RefactorScheme>>();
@@ -27,19 +27,11 @@ namespace YoutubeDatabaseController {
         }
 
         public static List<string> GetChannelId() {
-            List<string> channelId = new List<string>();
-            foreach (KeyValuePair<string, string> pair in _channelIdComponent) {
-                channelId.Add(pair.Key);
-            }
-            return channelId;
+            return _channelIdComponent.Select(pair => pair.Key).ToList();
         }
 
         public static List<string> GetDataBaseName() {
-            List<string> databaseName = new List<string>();
-            foreach (KeyValuePair<string, string> pair in _channelIdComponent) {
-                databaseName.Add(pair.Value);
-            }
-            return databaseName;
+            return _channelIdComponent.Select(pair => pair.Value).ToList();
         }
 
         public static Dictionary<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> GetAllCollections() {
@@ -61,35 +53,36 @@ namespace YoutubeDatabaseController {
         }
     }
     #endregion
+
     public static class ConfigLoader {
         public static void OnLoadEvent(MongoClient client) {
-            AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, "-->^ FIRST INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
+            AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, "-->^ FIRST INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
 
             List<string> configFolders = _ConfigFolderDir();
             Dictionary<string, string[]> configFiles = _ConfigFileDir(configFolders);
             Dictionary<string, Dictionary<string, ConfigScheme>> groupedDict = new Dictionary<string, Dictionary<string, ConfigScheme>>();
             foreach (KeyValuePair<string, string[]> fileComponent in configFiles) {
                 Dictionary<string, ConfigScheme> loadedDict  = new Dictionary<string, ConfigScheme>();
-                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"Parse Group [ ^{fileComponent.Key.Substring(Settings.ConfigDir.Length)}^ ]", 
+                AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $"Parse Group [ ^{fileComponent.Key.Substring(GeneralSettings.ConfigDir.Length)}^ ]", 
                     new []{ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
                 // AlConsole.WriteLine(CONFIG_INFORMATION, $"Parse Group [ {fileComponent.Key.Substring(Settings.ConfigDir.Length)} ]");
                 foreach (string file in fileComponent.Value) {
                     using (StreamReader reader = new StreamReader(file)) {
                         string raw = reader.ReadToEnd();
                         ConfigScheme clazzParse = Toml.ReadString<ConfigScheme>(raw);
-                        AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32}^ => Parsed!",
+                        AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32}^ => Parsed!",
                             new [] {ConsoleColor.Magenta, ConsoleColor.Green});
                         // AlConsole.WriteLine(CONFIG_INFORMATION, $"{clazzParse.Profile.Name + ".toml", 32} => Parsed!");
                         loadedDict.Add(clazzParse.Profile.DBName, clazzParse);
                     }
                 }
-                groupedDict.Add(fileComponent.Key.Substring(Settings.ConfigDir.Length), loadedDict);
+                groupedDict.Add(fileComponent.Key.Substring(GeneralSettings.ConfigDir.Length), loadedDict);
             }
-            AlConsole.WriteLine(CONFIG_INFORMATION, $"Loaded All Config Operational!");
-            AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, "-->^ SECOND INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
+            AlConsole.WriteLine(LogIndex.CONFIG_INFORMATION, $"Loaded All Config Operational!");
+            AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, "-->^ SECOND INITIALIZATION.", new [] {ConsoleColor.Blue, ConsoleColor.Green});
             // AlConsole.WriteLine(CONFIG_INFORMATION, "-> Second Initialization.");
             GenerateDataBaseProperty(client, groupedDict);
-            AlConsole.WriteLine(CONFIG_INFORMATION, $"Generated DataBase Property from Loaded Config.");
+            AlConsole.WriteLine(LogIndex.CONFIG_INFORMATION, $"Generated DataBase Property from Loaded Config.");
         }
 
         // Dictionary<MemberName(string), Dictionary<DataBaseName(string), DBProperty(IMongoCollection<RefactorScheme>)>>
@@ -97,26 +90,26 @@ namespace YoutubeDatabaseController {
             foreach (KeyValuePair<string, Dictionary<string, ConfigScheme>> groupedCorp in configComponent) {
                 Dictionary<string, IMongoCollection<RefactorScheme>> collectionsBuf = new Dictionary<string, IMongoCollection<RefactorScheme>>();
                 IMongoDatabase targetDataBase = client.GetDatabase(groupedCorp.Key);
-                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, " => Generate DataBase Property", 
+                AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, " => Generate DataBase Property", 
                     new [] {ConsoleColor.Cyan, ConsoleColor.Green});
                 // AlConsole.WriteLine(CONFIG_INFORMATION, " => Generate DataBase Property");
-                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" ┏ ^DataBase[ ^{groupedCorp.Key} ^]", 
+                AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $" ┏ ^DataBase[ ^{groupedCorp.Key} ^]", 
                     new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
                 // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┏ DataBase[ {groupedCorp.Key} ]");
                 foreach (KeyValuePair<string, ConfigScheme> configDict in groupedCorp.Value) {
                     IMongoCollection<RefactorScheme> generatedCollection =
                         targetDataBase.GetCollection<RefactorScheme>(configDict.Key);
-                    AlExtension.ColorizeWrite(CONFIG_INFORMATION, " ┣ ^Collection[ ^" + $"{configDict.Key, -26}" + " ^]",
+                    AlExtension.ColorizeWrite(LogIndex.CONFIG_INFORMATION, " ┣ ^Collection[ ^" + $"{configDict.Key, -26}" + " ^]",
                         new [] {ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta});
                     // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┣ Collection[ " + $"{configDict.Key, -26}" + " ]");
                     collectionsBuf.Add(configDict.Key, generatedCollection);
                     LoadedComponent.SetChannelIdComponent(configDict.Value.ChannelData[0].Details[0].ID.ToString(), configDict.Key);
-                    AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" / ^ChannelId[ " + $"^{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ^]",
+                    AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $" / ^ChannelId[ " + $"^{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ^]",
                         new [] {ConsoleColor.DarkGray, ConsoleColor.DarkMagenta, ConsoleColor.DarkCyan, ConsoleColor.DarkMagenta}, false);
                     // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┃  ┗ ChannelId[ " + $"{configDict.Value.ChannelData[0].Details[0].ID.ToString(), -16}" + " ]");
                 }
                 LoadedComponent.SetCollectionDict(targetDataBase, collectionsBuf);
-                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $" ┗ ^[ EOT ]", new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
+                AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $" ┗ ^[ EOT ]", new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
                 // AlConsole.WriteLine(CONFIG_INFORMATION, $" ┗ [ EOT ]");
             }
         }
@@ -126,20 +119,20 @@ namespace YoutubeDatabaseController {
         }
 
         private static List<string> _ConfigFolderDir() {
-            DirectoryInfo dInfo = new DirectoryInfo(Settings.ConfigDir);
+            DirectoryInfo dInfo = new DirectoryInfo(GeneralSettings.ConfigDir);
             if (!dInfo.Exists) {
                 string[] errMsg = new string[] {
                     "Configディレクトリが存在しません。",
-                    $"[ {Settings.ConfigDir} ]に以下URLのConfigファイルをセットしてください。",
+                    $"[ {GeneralSettings.ConfigDir} ]に以下URLのConfigファイルをセットしてください。",
                     "NekomataLibrary: https://github.com/ReiRokusanami0010/NekomataLibrary"
                 };
-                AlExtension.ArrayWrite(CONFIG_EXCEPTION, errMsg);
+                AlExtension.ArrayWrite(LogIndex.CONFIG_EXCEPTION, errMsg);
                 Environment.Exit(-1);
             }
-            List<string> detectDirNames = Directory.GetDirectories(Settings.ConfigDir).ToList<string>();
-            detectDirNames.Remove($"{Settings.ConfigDir}.git");
+            List<string> detectDirNames = Directory.GetDirectories(GeneralSettings.ConfigDir).ToList<string>();
+            detectDirNames.Remove($"{GeneralSettings.ConfigDir}.git");
             foreach (string detectName in detectDirNames) {
-                AlExtension.ColorizeWriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> ^[ {detectName, -18} ]",
+                AlExtension.ColorizeWriteLine(LogIndex.CONFIG_INFORMATION, $"Detect Corp Folder -> ^[ {detectName, -18} ]",
                     new [] {ConsoleColor.Green, ConsoleColor.Blue});
                 // AlConsole.WriteLine(CONFIG_INFORMATION, $"Detect Corp Folder -> [ {detectName, -18} ]");
             }

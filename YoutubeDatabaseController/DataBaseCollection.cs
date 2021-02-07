@@ -57,7 +57,7 @@ namespace YoutubeDatabaseController {
         }
 
         private static void Initialization(IMongoDatabase db, string targetCollection) {
-            AlExtension.ColorizeWrite(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ ^Init Collection: ^{targetCollection, -20} ", 
+            AlExtension.ColorizeWrite(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ ^Init Collection: ^{targetCollection, -26} ", 
                 new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
             // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ Init Collection: {targetCollection}");
             db.DropCollection(targetCollection);
