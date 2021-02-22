@@ -16,6 +16,8 @@ namespace RavenLauncher {
             }
 
             ConfigModel config = ConfigImporter.onDeserialize();
+            Settings.DataBaseUserName = config.DB_ACCESS_USERNAME;
+            Settings.DataBasePassWord = config.DB_ACCESS_PASSWORD;
             Settings.IgnoreDataArray = string.Join(',', config.ignoreData);
 
             // Make Status Folder

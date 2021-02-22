@@ -36,6 +36,7 @@ namespace YoutubeDatabaseController {
         // Store Ignore Data
         public static List<string> IgnoreVideoId { get; set; }
         public static bool OutputFreeChatVideoId { get; set; }
+        public static bool UseIgnoreDataFromConfig { get; set; } = false;
     }
     
 }

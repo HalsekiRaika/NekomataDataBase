@@ -69,7 +69,7 @@ namespace YoutubeDatabaseController {
                 };
                 */
                 
-                if (!LiveCheck.IsFreeChat(itemValue.Key) || Settings.IgnoreVideoId.Contains(item.Id.VideoId)) {
+                if (!LiveCheck.IsFreeChat(itemValue.Key) || (Settings.UseIgnoreDataFromConfig && Settings.IgnoreVideoId.Contains(item.Id.VideoId))) {
                     if (!LiveCheck.IsFinishedLive(refactorScheme)) {
                         _schemes.Add(refactorScheme);
                     } else {

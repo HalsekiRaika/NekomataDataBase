@@ -32,18 +32,22 @@ namespace RavenLauncher {
                 AlConsole.WriteLine(FailureCollectScheme, "コントローラーの起動に失敗しました。");
                 Interval();
                 if (!StatusChecker.IsRecoveryMode()) { Settings.RecvFile.Create(); }
-                using (StreamWriter writer = new StreamWriter(Settings.StatusDir + Settings.RecoveryStat)) {
-                    writer.Write($"Recovery Boot Time:{DateTime.Now:g}");
-                }
-                AlConsole.WriteLine(RecoveryBootScheme, "コントローラーを再起動します。");
-                for (int i = 0; i < 5; i++) {
-                    statusCode = CollectStart();
-                    if (statusCode != 0) {
-                        AlConsole.WriteLine(FailureCollectScheme, "コントローラーの再起動に失敗しました。");
-                        AlConsole.WriteLine(FailureCollectScheme, $"リトライします。[{i}]");
-                    } else {
-                        AlConsole.WriteLine(FailureCollectScheme, $"リカバリーに成功しました。");
-                        break;
+                using (StreamWriter writer = new StreamWriter(Settings.StatusDir + Settings.RecoveryStat, true)) {
+                    writer.Write($"Recovery Boot Time:{DateTime.Now:g}\n");
+                    AlConsole.WriteLine(RecoveryBootScheme, "コントローラーを再起動します。");                    
+                    for (int i = 0; i < 5; i++) {
+                        statusCode = CollectStart();
+                        if (statusCode != 0) {
+                            AlConsole.WriteLine(FailureCollectScheme, "コントローラーの再起動に失敗しました。");
+                            AlConsole.WriteLine(FailureCollectScheme,
+                                i < 4 ? $"リトライします。[{i + 1}]" : $"起動に{i + 1}回失敗しました。強制終了します。");
+                            Interval();
+                            writer.Write($"Recovery Boot Time:{DateTime.Now:g}\n");
+                        } else {
+                            AlConsole.WriteLine(FailureCollectScheme, $"リカバリーに成功しました。");
+                            writer.Write($"Successfully Recovery Boot Time:{DateTime.Now:g}\n");
+                            break;
+                        }
                     }
                 }
             }
@@ -67,7 +71,7 @@ namespace RavenLauncher {
         }
 
         private static void Interval() {
-            AlConsole.Write(AlStatusEnum.Caution, $"{"Recovery Booting", 16}", $"{"Launcher", 16}", "Interval.");
+            AlConsole.Write(AlStatusEnum.Caution, $"{"Recovery Boot", -15}", $"{"Launcher", -15}", "Interval.");
             for (int i = 0; i < 10; i++) {
                 Thread.Sleep(1000);
                 Console.Write(".");
