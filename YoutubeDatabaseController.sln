@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseController", "BaseContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenLauncher", "RavenLauncher\RavenLauncher.csproj", "{2199A684-4961-4A72-AE97-53672687D907}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigEditor", "ConfigEditor\ConfigEditor.csproj", "{80480D73-C04C-406F-92F3-FA575D612C1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupProcessor", "SetupProcessor\SetupProcessor.csproj", "{B582F2F7-11F2-4F57-B25F-BE9F958052E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{2199A684-4961-4A72-AE97-53672687D907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2199A684-4961-4A72-AE97-53672687D907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2199A684-4961-4A72-AE97-53672687D907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80480D73-C04C-406F-92F3-FA575D612C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80480D73-C04C-406F-92F3-FA575D612C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80480D73-C04C-406F-92F3-FA575D612C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80480D73-C04C-406F-92F3-FA575D612C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B582F2F7-11F2-4F57-B25F-BE9F958052E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B582F2F7-11F2-4F57-B25F-BE9F958052E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B582F2F7-11F2-4F57-B25F-BE9F958052E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B582F2F7-11F2-4F57-B25F-BE9F958052E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

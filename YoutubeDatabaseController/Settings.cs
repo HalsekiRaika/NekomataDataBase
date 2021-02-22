@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BaseController;
 
 namespace YoutubeDatabaseController {
@@ -31,7 +32,10 @@ namespace YoutubeDatabaseController {
         public static bool isLocal { get; set; }
         public static string User { get; set; }
         public static string Pass { get; set; }
-
+        
+        // Store Ignore Data
+        public static List<string> IgnoreVideoId { get; set; }
+        public static bool OutputFreeChatVideoId { get; set; }
     }
     
 }

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net48</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1-beta1" />
+      <PackageReference Include="System.Net.Http" Version="4.3.4" />
+      <PackageReference Include="YamlDotNet" Version="9.1.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SetupProcessor\SetupProcessor.csproj" />
+    </ItemGroup>
+
+</Project>

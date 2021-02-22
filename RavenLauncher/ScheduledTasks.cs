@@ -14,7 +14,11 @@ namespace RavenLauncher {
         public static void Fire() {
             AlConsole.WriteLine(LauncherInfoScheme, "Service Fired (*´ω｀*)");
             //_timer = new Timer(60 * 60 * 1000);
-            _timer = Settings.IsMaintenanceMode ? new Timer(60 * 1000) : new Timer(60 * 60 * 1000);
+#if DEBUG
+            _timer = new Timer(60 * 1000);
+#else 
+            _timer = new Timer(60 * 60 * 1000);     
+#endif
             _timer.Elapsed += new ElapsedEventHandler(OnTimeEvent);
             _timer.Start();
             CollectStart();
@@ -52,7 +56,8 @@ namespace RavenLauncher {
                 StartInfo = new ProcessStartInfo() {
                     FileName = Settings.Controller,
                     Arguments = $"--user {Settings.DataBaseUserName} --pass {Settings.DataBasePassWord}" + " " +
-                                $"{(Settings.DataBaseIsLocal ? "--local true" : string.Empty)}",
+                                $"{(Settings.DataBaseIsLocal ? "--local true" : string.Empty)}" + " " +
+                                $"--ignore {Settings.IgnoreDataArray}",
                     UseShellExecute = true
                 }
             };

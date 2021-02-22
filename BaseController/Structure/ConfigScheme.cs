@@ -1,4 +1,4 @@
-﻿namespace YoutubeDatabaseController.Scheme {
+﻿namespace BaseController.Structure {
     public partial class ConfigScheme {
         public Profile Profile { get; set; }
         public ChannelData[] ChannelData { get; set; }

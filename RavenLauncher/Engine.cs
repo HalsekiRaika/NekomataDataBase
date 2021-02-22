@@ -1,19 +1,38 @@
 ﻿using System;
 using Log5RLibs.Services;
-
+using SetupProcessor;
+using SetupProcessor.Model;
 using static RavenLauncher.Schemes.LauncherScheme;
 
 namespace RavenLauncher {
     public static class Engine {
         public static void Main(string[] args) {
-            // Start Message
-            AlConsole.WriteLine(LauncherInfoScheme, $"Start Up RavenLauncher.");
-            
             // Arguments Parse.
             ArgParser.Decomposition(args);
             
+            // Config Setup
+            if (!Settings.DoSkipConfigGenerate) {
+                ConfigExporter.onTemplateGenerate();
+            }
+
+            ConfigModel config = ConfigImporter.onDeserialize();
+            Settings.IgnoreDataArray = string.Join(',', config.ignoreData);
+
             // Make Status Folder
             StatusChecker.MakeStatusDir();
+            
+            // Start Message
+            AlConsole.WriteLine(LauncherInfoScheme, $"Start Up RavenLauncher.");
+            
+            ScheduledTasks.Fire();
+            AlConsole.WriteLine(LauncherCautScheme, "> Press Enter, Launcher to Stop. <");
+            Console.ReadLine();
+            AlConsole.WriteLine(LauncherCautScheme, "Stopped Launcher.");
+            
+            /*
+            // Arguments Parse.
+            ArgParser.Decomposition(args);
+        
             
             // Setup
             if (!StatusChecker.IsDownloaded()) {
@@ -26,6 +45,7 @@ namespace RavenLauncher {
             AlConsole.WriteLine(LauncherCautScheme, "> Press Enter, Launcher to Stop. <");
             Console.ReadLine();
             AlConsole.WriteLine(LauncherCautScheme, "Stopped Launcher.");
+            */
         }
     }
 }

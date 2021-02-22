@@ -133,7 +133,9 @@ namespace YoutubeDatabaseController {
                 AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
                     new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
-            
+
+            string free = string.Join(',', SchemeOrthopedy.GetFreeChatLivesDict().Keys);
+
             AlConsole.WriteLine(SORTLOG_SCHEME, " ");
             AlConsole.WriteLine(SORTLOG_SCHEME, "遅刻ライブ : 以下のものは挿入タスクに追加されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
@@ -173,6 +175,8 @@ namespace YoutubeDatabaseController {
             AlConsole.WriteLine(CONTROLLER, $"  Validated Caution Data => {Settings.CautData}");
             AlConsole.WriteLine(CONTROLLER, $"  Validated Warning Data => {Settings.WarnData}");
             AlConsole.WriteLine(CONTROLLER, "Have a good live broadcast today !");
+
+            if (Settings.OutputFreeChatVideoId) { Console.WriteLine(free); }
         }
     }
 }

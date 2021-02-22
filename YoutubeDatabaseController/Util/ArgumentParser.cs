@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Log5RLibs.Services;
 using Log5RLibs.utils;
 
@@ -18,6 +19,18 @@ namespace YoutubeDatabaseController.Util {
                         
                         case "--local":
                             Settings.isLocal = targetArgs[++i].Equals("true");
+                            break;
+                        
+                        case "--ignore":
+                            Settings.IgnoreVideoId = targetArgs[++i].Split(',').ToList();
+                            break;
+                        
+                        case "--freechat":
+                            Settings.OutputFreeChatVideoId = true;
+                            break;
+                        
+                        default:
+                            AlConsole.WriteLine(AlStatusEnum.Warning, "ArgExcp", "Arg Parser", $"Unknown Argument: {targetArgs[i]}");
                             break;
                     }
                 }

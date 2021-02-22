@@ -8,7 +8,6 @@ using BaseController.Logging;
 using Log5RLibs.Services;
 using MongoDB.Driver;
 using Nett;
-using YoutubeDatabaseController.Scheme;
 
 namespace BaseController.Config {
     #region LOADED_COMPONENT

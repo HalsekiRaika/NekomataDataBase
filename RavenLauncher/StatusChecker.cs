@@ -7,9 +7,5 @@
         public static bool IsRecoveryMode() {
             return Settings.RecvFile.Exists;
         }
-
-        public static bool IsDownloaded() {
-            return Settings.DlFile.Exists;
-        }
     }
 }
