@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BaseDataCollector\BaseDataCollector.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Log5RLibs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\BaseDataCollector\Libs\Log5RLibs.dll</HintPath>
+      </Reference>
+      <Reference Include="RetryExecutor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\BaseDataCollector\Libs\RetryExecutor.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

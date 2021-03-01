@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+      <PackageReference Include="Nett" Version="0.15.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1-beta1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Log5RLibs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\NekomataDataBase_TMP\BaseController\Libs\Log5RLibs.dll</HintPath>
+      </Reference>
+      <Reference Include="RetryExecutor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\NekomataDataBase_TMP\BaseController\Libs\RetryExecutor.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
