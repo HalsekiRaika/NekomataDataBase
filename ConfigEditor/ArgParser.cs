@@ -52,7 +52,8 @@ namespace ConfigEditor {
             } catch (IndexOutOfRangeException) {
                 AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.\n");
                 Console.WriteLine(
-                    "This app is an editor for configuring the Launcher.\n"
+                    "This app is an editor for configuring the Launcher.\n\n"
+                    + "Args (Reduction/Regular)  Second Arg(s)          : Description"
                     + "-----------------------------------------------------------------------------\n" 
                     + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
                     + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
