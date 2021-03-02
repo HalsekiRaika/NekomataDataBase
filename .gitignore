@@ -6,3 +6,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 Nekomata/
+tools/*
+!tools/packages.config
+out/

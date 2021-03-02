@@ -31,7 +31,7 @@ namespace YtDataCollector {
             // Set Client for Environment (Windows or Linux).
             _mongoClient = Settings.isLocal
                 ? new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@124.0.0.1")
-                : new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@{Settings.NekomataAws}");
+                : new MongoClient($"mongodb://{Settings.User}:{Settings.Pass}@{Settings.NekomataServer}");
             
             ConfigLoader.OnLoadEvent(_mongoClient);
             
