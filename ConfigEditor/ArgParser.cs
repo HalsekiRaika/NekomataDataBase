@@ -50,7 +50,16 @@ namespace ConfigEditor {
                     }
                 }
             } catch (IndexOutOfRangeException) {
-                AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.");
+                AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.\n");
+                Console.WriteLine(
+                    "This app is an editor for configuring the Launcher.\n"
+                    + "-----------------------------------------------------------------------------\n" 
+                    + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
+                    + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
+                    + "-p   / --pass             <DB_PASSWORD>          : Set MongoDB PassWord.\n"
+                    + "-ia  / --ignore-add       <TARGET_VIDEO_ID>      : Set Ignore Collect Target.\n"
+                    + "-iaa / --ignore-add-array <TARGET_VIDEO_ID, ...> : Set Ignore Collect Targets.\n\n"
+                    );
             }
             
             ConfigUpdater.onUpdate(apiKey, userName, passWord, ignoreData);
