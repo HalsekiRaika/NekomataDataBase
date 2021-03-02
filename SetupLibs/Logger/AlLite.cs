@@ -2,7 +2,7 @@
 
 namespace SetupLibs.Logger {
     public static class AlLite {
-        public static void WriteLine(WriteMode mode, string msg) {
+        public static void WriteLine(WriteMode mode, string msg, bool isNewline = true) {
             Console.Write("[ ");
             switch (mode) {
                 case WriteMode.INFO:
@@ -29,7 +29,12 @@ namespace SetupLibs.Logger {
                     Console.ResetColor();
                     break;
             }
-            Console.WriteLine($" ] {DateTime.Now:MMddhhmmss}: " + msg);
+
+            if (isNewline) {
+                Console.WriteLine($" ] {DateTime.Now:MMddhhmmss}: " + msg);
+            } else {
+                Console.Write($" ] {DateTime.Now:MMddhhmmss}: " + msg);              
+            }
         }
     }
 

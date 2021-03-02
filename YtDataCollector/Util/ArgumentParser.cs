@@ -31,7 +31,7 @@ namespace YtDataCollector.Util {
                             break;
                         
                         default:
-                            AlConsole.WriteLine(AlStatusEnum.Warning, "ArgExcp", "Arg Parser", $"Unknown Argument: {targetArgs[i]}");
+                            //AlConsole.WriteLine(AlStatusEnum.Warning, "ArgExcp", "Arg Parser", $"Unknown Argument: {targetArgs[i]}");
                             break;
                     }
                 }

@@ -11,6 +11,7 @@ using static Launcher.Schemes.LauncherScheme;
 namespace Launcher {
     public static class ScheduledTasks {
         private static Timer _timer;
+        public static void onReload() => CollectStart();
         public static void Fire() {
             AlConsole.WriteLine(LauncherInfoScheme, "Service Fired (*´ω｀*)");
             //_timer = new Timer(60 * 60 * 1000);

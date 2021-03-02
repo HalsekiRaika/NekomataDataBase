@@ -12,7 +12,7 @@ namespace Launcher {
             
             // Config Setup
             if (!Settings.DoSkipConfigGenerate) {
-                ConfigExporter.onTemplateGenerate();
+                ConfigExporter.onTemplateGenerate(Settings.DataBaseUserName, Settings.DataBasePassWord);
             }
 
             ConfigModel config = ConfigImporter.onDeserialize();
@@ -22,15 +22,20 @@ namespace Launcher {
 
             // Make Status Folder
             StatusChecker.MakeStatusDir();
+
+            bool ready_a = StatusChecker.IsConfigVerified(config);
+            bool ready_b = StatusChecker.IsControllerBuilt();
+            
+            if (!(ready_a && ready_b)) { Environment.Exit(-1); }
             
             // Start Message
             AlConsole.WriteLine(LauncherInfoScheme, $"Start Up RavenLauncher.");
             
             ScheduledTasks.Fire();
             AlConsole.WriteLine(LauncherCautScheme, "> Press Enter, Launcher to Stop. <");
-            Console.ReadLine();
-            AlConsole.WriteLine(LauncherCautScheme, "Stopped Launcher.");
             
+            WaitTask.onStart();
+
             /*
             // Arguments Parse.
             ArgParser.Decomposition(args);

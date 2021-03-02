@@ -16,7 +16,7 @@ using static YtDataCollector.Scheme.LogScheme.DefaultScheme;
 
 namespace YtDataCollector {
     public static class ControlMain {
-        private static List<string> serializedObject = new List<string>();
+        private static readonly List<string> serializedObject = new List<string>();
         private static MongoClient _mongoClient;
         // ReSharper disable all PossibleMultipleEnumeration
         static void Main(string[] args) {

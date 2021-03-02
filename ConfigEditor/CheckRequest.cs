@@ -11,14 +11,16 @@ namespace ConfigEditor {
             HttpClient httpClient = new HttpClient();
             ParseObject parseObject;
             try {
-                AlLite.WriteLine(WriteMode.INFO, $"Checking :: {ignoreVideoId}");
+                AlLite.WriteLine(WriteMode.INFO, $"Checking :: {ignoreVideoId} ", false);
                 string getObj = httpClient.GetStringAsync(
                     $"https://www.googleapis.com/youtube/v3/videos?" + 
                     $"id={ignoreVideoId}&key={model.API_KEY}&" + 
                     $"fields=items(id,snippet/title)&part=snippet").Result;
                 parseObject = JsonConvert.DeserializeObject<ParseObject>(getObj);
+                Console.WriteLine("√ Verified!");
             } catch (Exception e) {
-                Console.WriteLine(e);
+                Console.WriteLine("X NotFound...");
+                Console.WriteLine("\n" + e);
                 throw;
             }
             return new ConfigModel.IgnoreData() { IgnoreDataName = parseObject.items[0].snippet.title, IgnoreVideoId = ignoreVideoId };
