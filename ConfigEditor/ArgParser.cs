@@ -17,6 +17,7 @@ namespace ConfigEditor {
             try { 
                 for (int i = 0; i < arg.Length; i++) {
                     switch (arg[i]) {
+                        case "-c":
                         case "--clear":
                             ConfigExporter.onTemplateGenerate();
                             break;
@@ -53,8 +54,9 @@ namespace ConfigEditor {
                 AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.\n");
                 Console.WriteLine(
                     "This app is an editor for configuring the Launcher.\n\n"
-                    + "Args (Reduction/Regular)  Second Arg(s)          : Description"
-                    + "-----------------------------------------------------------------------------\n" 
+                    + "Args (Reduction/Regular)  Second Arg(s)          : Description\n"
+                    + "--------------------------------------------------------------------------------------\n"
+                    + "-c   / --clear                                   : Generate(overwrite) default config.\n" 
                     + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
                     + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
                     + "-p   / --pass             <DB_PASSWORD>          : Set MongoDB PassWord.\n"
