@@ -9,6 +9,10 @@ namespace SetupLibs {
         private static readonly Action<string> onLogAction = msg => AlLite.WriteLine(WriteMode.INFO, msg);
         
         public static ConfigModel onDeserialize(bool isDisplay = true) {
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {
+                AlLite.WriteLine(WriteMode.WARN, "Config File is not found.");
+                return null;
+            }
             onLogAction.Invoke("Deserialize launcher config.");
             using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {
                 Deserializer deserializer = new Deserializer();

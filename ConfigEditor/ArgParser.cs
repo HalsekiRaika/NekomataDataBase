@@ -14,7 +14,8 @@ namespace ConfigEditor {
         
         public static void Decomposition(string[] arg) {
             ConfigModel model = ConfigImporter.onDeserialize(false);
-            try { 
+            try {
+                if (arg.Length < 1) { WriteGuide(); return; }
                 for (int i = 0; i < arg.Length; i++) {
                     switch (arg[i]) {
                         case "-c":
@@ -50,22 +51,27 @@ namespace ConfigEditor {
                             break;
                     }
                 }
+                
+                ConfigUpdater.onUpdate(apiKey, userName, passWord, ignoreData);
+                
             } catch (IndexOutOfRangeException) {
                 AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.\n");
-                Console.WriteLine(
-                    "This app is an editor for configuring the Launcher.\n\n"
-                    + "Args (Reduction/Regular)  Second Arg(s)          : Description\n"
-                    + "--------------------------------------------------------------------------------------\n"
-                    + "-c   / --clear                                   : Generate(overwrite) default config.\n" 
-                    + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
-                    + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
-                    + "-p   / --pass             <DB_PASSWORD>          : Set MongoDB PassWord.\n"
-                    + "-ia  / --ignore-add       <TARGET_VIDEO_ID>      : Set Ignore Collect Target.\n"
-                    + "-iaa / --ignore-add-array <TARGET_VIDEO_ID, ...> : Set Ignore Collect Targets.\n\n"
-                    );
+                WriteGuide();
             }
-            
-            ConfigUpdater.onUpdate(apiKey, userName, passWord, ignoreData);
+        }
+
+        private static void WriteGuide() {
+            Console.WriteLine(
+                "This app is an editor for configuring the Launcher.\n\n"
+                + "Args (Reduction/Regular)  Second Arg(s)          : Description\n"
+                + "--------------------------------------------------------------------------------------\n"
+                + "-c   / --clear                                   : Generate(overwrite) default config.\n" 
+                + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
+                + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
+                + "-p   / --pass             <DB_PASSWORD>          : Set MongoDB PassWord.\n"
+                + "-ia  / --ignore-add       <TARGET_VIDEO_ID>      : Set Ignore Collect Target.\n"
+                + "-iaa / --ignore-add-array <TARGET_VIDEO_ID, ...> : Set Ignore Collect Targets.\n\n"
+            );
         }
     }
 }
