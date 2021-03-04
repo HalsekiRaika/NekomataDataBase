@@ -22,15 +22,16 @@ namespace Launcher {
         
         public static bool IsControllerBuilt() {
             if (Directory.Exists(Settings.BuildDir)) {
-                if (File.Exists(Settings.BuildDir + "*")) {
+                FileInfo[] builtFiles = new DirectoryInfo(Settings.BuildDir).GetFiles();
+                if (!(builtFiles.Length < 1)) {
                     AlLite.WriteLine(WriteMode.INFO, "Controller Ready!");
                     return true;
                 } else {
-                    AlLite.WriteLine(WriteMode.ERR, "Not found Controller...");
+                    AlLite.WriteLine(WriteMode.ERR, "Not found Collector...");
                     return false;
                 }
             } else {
-                AlLite.WriteLine(WriteMode.ERR, "Not found Controller Directory...");
+                AlLite.WriteLine(WriteMode.ERR, "Not found Collector Directory...");
                 return false;
             }
         }

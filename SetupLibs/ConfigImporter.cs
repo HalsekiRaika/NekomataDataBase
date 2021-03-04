@@ -11,7 +11,7 @@ namespace SetupLibs {
         public static ConfigModel onDeserialize(bool isDisplay = true) {
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {
                 AlLite.WriteLine(WriteMode.WARN, "Config File is not found.");
-                return null;
+                throw new FileLoadException("You forgot the Config file, you have to generate it with Editor.");
             }
             onLogAction.Invoke("Deserialize launcher config.");
             using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {

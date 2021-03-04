@@ -160,7 +160,8 @@ namespace YtDataCollector {
             });
             
             // Displays serialized information.
-            serializedObject.ForEach(i => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, $"{i.ToString().Substring(0, 64), -67}" + "......[OMT]"));
+            serializedObject.ForEach(i 
+                => AlConsole.WriteLine(DefaultScheme.SERIALIZELOG_SCHEME, $"{i.ToString().Substring(0, 64), -67}" + "......[OMT]"));
             
             // Send the serialize object to Database.
             DataBaseCollection.Insert(_mongoClient, SchemeOrthopedy.GetSchemes());

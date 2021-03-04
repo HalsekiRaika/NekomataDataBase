@@ -30,10 +30,14 @@ Task("createOutputDir").Does(() => {
     CreateDirectory(collectorBuildDir);
 });
 
-Task("buildRun").IsDependentOn("createOutputDir")
-    .IsDependentOn("buildYoutubeDataCollector")
-    .Does(() => {
-    Information("Nekomata Server App Built.");
+Task("clearDir").Does(() => {
+    CleanDirectory(baseBuildDir);
 });
+
+Task("buildRun")
+    .IsDependentOn("clearDir")
+    .IsDependentOn("createOutputDir")
+    .IsDependentOn("buildYoutubeDataCollector")
+    .Does(() => { Information("Nekomata Server App Built.");});
 
 RunTarget("buildRun");
