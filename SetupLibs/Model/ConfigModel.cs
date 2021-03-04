@@ -4,6 +4,7 @@ using YamlDotNet.Serialization;
 namespace SetupLibs.Model {
     public class ConfigModel {
         public string API_KEY { get; set; }
+        public string DB_IP_ADDRESS      { get; set; }
         public string DB_ACCESS_USERNAME { get; set; }
         public string DB_ACCESS_PASSWORD { get; set; }
         public bool   IS_LOCAL_MODE      { get; set; }

@@ -20,7 +20,7 @@ namespace YtDataCollector {
         public static int WarnData = 0;
 
         // Server
-        public static readonly string NekomataServer = "18.210.220.130";
+        public static string DataBaseServer { get; set; }
         public static readonly string NekomataLocal  = "192.168.0.5";
 
         // Config Dir

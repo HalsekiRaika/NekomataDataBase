@@ -6,11 +6,12 @@ using static SetupLibs.Model.ConfigModel;
 
 namespace SetupLibs {
     public static class ConfigUpdater {
-        public static void onUpdate([Optional] string apiKey, [Optional] string dbUserName, 
-                [Optional] string dbPassWord, [Optional] List<IgnoreData> ignoreData) {
+        public static void onUpdate([Optional] string apiKey, [Optional] string DbAddress,
+                [Optional] string dbUserName, [Optional] string dbPassWord, [Optional] List<IgnoreData> ignoreData) {
             ConfigModel updateTarget = ConfigImporter.onDeserialize(false);
             ConfigModel updatedModel = new ConfigModel() {
                 API_KEY = updateApiKey(updateTarget, apiKey),
+                DB_IP_ADDRESS      = updateDbIPAddress(updateTarget, DbAddress),
                 DB_ACCESS_USERNAME = updateDbUserName(updateTarget, dbUserName),
                 DB_ACCESS_PASSWORD = updateDbPassWord(updateTarget, dbPassWord),
                 IS_LOCAL_MODE = false,
@@ -26,6 +27,12 @@ namespace SetupLibs {
             AlLite.WriteLine(WriteMode.INFO, $"Update ApiKey: {apiKey.Substring(0, 3)}");
             WarningText("apiKey");
             return apiKey;
+        }
+        
+        private static string updateDbIPAddress(ConfigModel targetModel, [Optional] string DbAddress) {
+            if (DbAddress == null) { AlLite.WriteLine(WriteMode.INFO, "No Update DataBase IPAddress."); return targetModel.DB_IP_ADDRESS; }
+            AlLite.WriteLine(WriteMode.INFO, $"Update DataBase IPAddress: {DbAddress}");
+            return DbAddress;
         }
         
         private static string updateDbUserName(ConfigModel targetModel, [Optional] string dbUserName) {

@@ -21,7 +21,8 @@ namespace SetupLibs {
             infoLog.Invoke("Finished Config Generate.");
         }
         
-        public static void onTemplateGenerate([Optional] string dbUserName, [Optional] string dbPassWord) {
+        public static void onTemplateGenerate([Optional] string dbIPAddress,
+                [Optional] string dbUserName, [Optional] string dbPassWord) {
             infoLog.Invoke("Generating Config...");
             if (!(dbUserName == null && dbPassWord == null)) {
                 infoLog.Invoke("Get property from app arguments.");
@@ -31,8 +32,9 @@ namespace SetupLibs {
 
             ConfigModel template = new ConfigModel() {
                 API_KEY = Settings.ApikeyTemplateMessage,
-                DB_ACCESS_USERNAME = dbUserName ?? Settings.UserNameTemplateString,
-                DB_ACCESS_PASSWORD = dbPassWord ?? Settings.PassWordTemplateString,
+                DB_IP_ADDRESS      = dbIPAddress ?? Settings.DataBaseTemplateString,
+                DB_ACCESS_USERNAME = dbUserName  ?? Settings.UserNameTemplateString,
+                DB_ACCESS_PASSWORD = dbPassWord  ?? Settings.PassWordTemplateString,
                 IS_LOCAL_MODE      = false,
                 IS_CONFIG_INSTALL  = false, 
                 ignoreData = new List<ConfigModel.IgnoreData>() {

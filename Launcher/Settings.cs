@@ -13,6 +13,7 @@ namespace Launcher {
 
         // Program Argument
         public static bool   DoSkipConfigGenerate { get; set; } = false;
+        public static string DataBaseIPAddress    { get; set; }
         public static string DataBaseUserName     { get; set; }
         public static string DataBasePassWord     { get; set; }
         public static bool   DataBaseIsLocal      { get; set; } = false;

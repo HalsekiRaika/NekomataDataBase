@@ -16,10 +16,11 @@ namespace Launcher {
             }
 
             ConfigModel config = ConfigImporter.onDeserialize(isSafeMode: true);
-            Settings.DataBaseUserName = config.DB_ACCESS_USERNAME;
-            Settings.DataBasePassWord = config.DB_ACCESS_PASSWORD;
-            Settings.IsLibraryInstall = config.IS_CONFIG_INSTALL;
-            Settings.IgnoreDataArray = string.Join(',', config.ignoreData);
+            Settings.DataBaseIPAddress = config.DB_IP_ADDRESS;
+            Settings.DataBaseUserName  = config.DB_ACCESS_USERNAME;
+            Settings.DataBasePassWord  = config.DB_ACCESS_PASSWORD;
+            Settings.IsLibraryInstall  = config.IS_CONFIG_INSTALL;
+            Settings.IgnoreDataArray   = string.Join(',', config.ignoreData);
 
             // Make Status Folder
             StatusChecker.MakeStatusDir();

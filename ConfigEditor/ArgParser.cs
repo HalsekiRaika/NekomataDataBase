@@ -8,6 +8,7 @@ using SetupLibs.Model;
 namespace ConfigEditor {
     public static class ArgParser {
         private static string apiKey;
+        private static string dataBase;
         private static string userName;
         private static string passWord;
         private static readonly List<ConfigModel.IgnoreData> ignoreData = new List<ConfigModel.IgnoreData>();
@@ -22,10 +23,15 @@ namespace ConfigEditor {
                         case "--clear":
                             ConfigExporter.onTemplateGenerate();
                             break;
-                        
+
                         case "-a":
                         case "--api-key":
                             apiKey = arg[++i];
+                            break;
+                        
+                        case "-db":
+                        case "--database":
+                            dataBase = arg[++i];
                             break;
                         
                         case "-u":
@@ -52,7 +58,7 @@ namespace ConfigEditor {
                     }
                 }
                 
-                ConfigUpdater.onUpdate(apiKey, userName, passWord, ignoreData);
+                ConfigUpdater.onUpdate(apiKey, dataBase, userName, passWord, ignoreData);
                 
             } catch (IndexOutOfRangeException) {
                 AlLite.WriteLine(WriteMode.ERR, "Incorrect Number of Arguments.\n");
@@ -66,7 +72,8 @@ namespace ConfigEditor {
                 + "Args (Reduction/Regular)  Second Arg(s)          : Description\n"
                 + "--------------------------------------------------------------------------------------\n"
                 + "-c   / --clear                                   : Generate(overwrite) default config.\n" 
-                + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n" 
+                + "-a   / --api-key          <API_KEY>              : Set YoutubeDataApi Apikey.\n"
+                + "-db  / --database         <IP_ADDRESS>           : Set Server IP Address.\n" 
                 + "-u   / --user             <DB_USERNAME>          : Set MongoDB UserName.\n" 
                 + "-p   / --pass             <DB_PASSWORD>          : Set MongoDB PassWord.\n"
                 + "-ia  / --ignore-add       <TARGET_VIDEO_ID>      : Set Ignore Collect Target.\n"

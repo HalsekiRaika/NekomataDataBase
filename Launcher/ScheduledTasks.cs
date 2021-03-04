@@ -60,7 +60,8 @@ namespace Launcher {
             Process process = new Process {
                 StartInfo = new ProcessStartInfo() {
                     FileName = Settings.Controller,
-                    Arguments = $"--user {Settings.DataBaseUserName} --pass {Settings.DataBasePassWord}" + " " +
+                    Arguments = $"--database {Settings.DataBaseIPAddress}" + " " +
+                                $"--user {Settings.DataBaseUserName} --pass {Settings.DataBasePassWord}" + " " +
                                 $"{(Settings.DataBaseIsLocal ? "--local true" : string.Empty)}" + " " +
                                 $"--ignore {Settings.IgnoreDataArray}",
                     UseShellExecute = true

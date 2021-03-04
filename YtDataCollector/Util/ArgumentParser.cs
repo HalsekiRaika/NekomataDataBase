@@ -18,6 +18,10 @@ namespace YtDataCollector.Util {
                             Settings.Pass = targetArgs[++i];
                             break;
                         
+                        case "--database":
+                            Settings.DataBaseServer = targetArgs[++i];
+                            break;
+                        
                         case "--local":
                             Settings.isLocal = targetArgs[++i].Equals("true");
                             break;
