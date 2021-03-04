@@ -15,9 +15,10 @@ namespace Launcher {
                 ConfigExporter.onTemplateGenerate(Settings.DataBaseUserName, Settings.DataBasePassWord);
             }
 
-            ConfigModel config = ConfigImporter.onDeserialize();
+            ConfigModel config = ConfigImporter.onDeserialize(isSafeMode: true);
             Settings.DataBaseUserName = config.DB_ACCESS_USERNAME;
             Settings.DataBasePassWord = config.DB_ACCESS_PASSWORD;
+            Settings.IsLibraryInstall = config.IS_CONFIG_INSTALL;
             Settings.IgnoreDataArray = string.Join(',', config.ignoreData);
 
             // Make Status Folder
@@ -27,6 +28,8 @@ namespace Launcher {
             bool ready_b = StatusChecker.IsControllerBuilt();
             
             if (!(ready_a && ready_b)) { Environment.Exit(-1); }
+            
+            LibraryInstaller.onInstall();
             
             // Start Message
             AlConsole.WriteLine(LauncherInfoScheme, $"Start Up RavenLauncher.");

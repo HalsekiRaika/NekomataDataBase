@@ -7,6 +7,7 @@ namespace SetupLibs.Model {
         public string DB_ACCESS_USERNAME { get; set; }
         public string DB_ACCESS_PASSWORD { get; set; }
         public bool   IS_LOCAL_MODE      { get; set; }
+        public bool   IS_CONFIG_INSTALL  { get; set; }
         [YamlMember(Alias = "IgnoreData")]
         public List<IgnoreData> ignoreData { get; set; }
 

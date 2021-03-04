@@ -14,6 +14,7 @@ namespace SetupLibs {
                 DB_ACCESS_USERNAME = updateDbUserName(updateTarget, dbUserName),
                 DB_ACCESS_PASSWORD = updateDbPassWord(updateTarget, dbPassWord),
                 IS_LOCAL_MODE = false,
+                IS_CONFIG_INSTALL = false,
                 ignoreData = updateIgnoreData(updateTarget, ignoreData)
             };
 

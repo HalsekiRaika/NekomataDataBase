@@ -34,6 +34,7 @@ namespace SetupLibs {
                 DB_ACCESS_USERNAME = dbUserName ?? Settings.UserNameTemplateString,
                 DB_ACCESS_PASSWORD = dbPassWord ?? Settings.PassWordTemplateString,
                 IS_LOCAL_MODE      = false,
+                IS_CONFIG_INSTALL  = false, 
                 ignoreData = new List<ConfigModel.IgnoreData>() {
                     new ConfigModel.IgnoreData() {
                         IgnoreDataName = "Example: FreeChat",

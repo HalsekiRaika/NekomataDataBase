@@ -8,10 +8,11 @@ namespace SetupLibs {
     public static class ConfigImporter {
         private static readonly Action<string> onLogAction = msg => AlLite.WriteLine(WriteMode.INFO, msg);
         
-        public static ConfigModel onDeserialize(bool isDisplay = true) {
+        public static ConfigModel onDeserialize(bool isDisplay = true, bool isSafeMode = false) {
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {
                 AlLite.WriteLine(WriteMode.WARN, "Config File is not found.");
-                throw new FileLoadException("You forgot the Config file, you have to generate it with Editor.");
+                if (isSafeMode) { throw new FileLoadException("You forgot the Config file, you have to generate it with Editor."); }
+                return null;
             }
             onLogAction.Invoke("Deserialize launcher config.");
             using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "launcher_config.yaml")) {
