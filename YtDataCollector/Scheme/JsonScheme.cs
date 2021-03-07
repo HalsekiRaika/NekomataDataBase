@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace YoutubeDatabaseController.Scheme {
+namespace YtDataCollector.Scheme {
     public partial class JsonScheme {
         [JsonProperty("kind")]
         public string Kind { get; set; }

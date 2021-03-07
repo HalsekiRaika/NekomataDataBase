@@ -2,6 +2,7 @@
 using BaseDataCollector.Structure.LogScheme;
 using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
+using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
 
 namespace YtDataCollector.Extension {
     public static class AlExtension {

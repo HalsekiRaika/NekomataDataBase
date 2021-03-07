@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using YoutubeDatabaseController;
 using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme.LogScheme;
+using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
 
 namespace YtDataCollector {
     public static class DataBaseCollection {

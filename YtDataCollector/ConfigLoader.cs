@@ -9,6 +9,7 @@ using MongoDB.Driver;
 using Nett;
 using YoutubeDatabaseController.Scheme;
 using static YtDataCollector.Scheme.LogScheme.DefaultScheme;
+using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
 
 namespace YtDataCollector {
     #region LOADED_COMPONENT

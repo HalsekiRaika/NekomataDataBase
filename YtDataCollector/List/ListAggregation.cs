@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YoutubeDatabaseController.Scheme;
+using YtDataCollector.Scheme;
 
 namespace YoutubeDatabaseController.List {
     public static class ListAggregation {

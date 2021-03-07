@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using BaseDataCollector.Extension;
 using YoutubeDatabaseController;
 using YoutubeDatabaseController.Scheme;
-using YoutubeDatabaseController.Scheme.Builder;
+using YtDataCollector.Scheme;
+using YtDataCollector.Scheme.Builder;
 using YtDataCollector.Scheme.LogScheme;
 using YtDataCollector.Util;
+using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
 
 namespace YtDataCollector {
     public static class SchemeOrthopedy {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YoutubeDatabaseController.Scheme.Builder {
+namespace YtDataCollector.Scheme.Builder {
     public interface INeedThumbnailUrl { ThumbnailDataBuilder SetUrl(Uri uri); }
 
     public sealed class ThumbnailDataBuilder : INeedThumbnailUrl {
@@ -27,8 +27,8 @@ namespace YoutubeDatabaseController.Scheme.Builder {
             return this;
         }
 
-        public ThumbnailsData Build() {
-            return new ThumbnailsData(this);
+        public YtDataCollector.Scheme.ThumbnailsData Build() {
+            return new YtDataCollector.Scheme.ThumbnailsData(this);
         }
     }
 }

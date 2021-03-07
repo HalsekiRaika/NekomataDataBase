@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Log5RLibs.Services;
 using YoutubeDatabaseController.Scheme;
+using YtDataCollector.Scheme;
 using YtDataCollector.Scheme.LogScheme;
 
 namespace YoutubeDatabaseController.List {

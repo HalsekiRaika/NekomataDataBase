@@ -1,6 +1,6 @@
 ﻿using YtDataCollector.Util;
 
-namespace YoutubeDatabaseController.Scheme.Builder {
+namespace YtDataCollector.Scheme.Builder {
     public interface INeedTitle       { INeedDescription SetTitle(string title); }
     public interface INeedDescription { INeedVideoId SetDescription(string description); }
     public interface INeedVideoId     { INeedChannelId SetVideoId(string videoId); }
@@ -8,7 +8,7 @@ namespace YoutubeDatabaseController.Scheme.Builder {
     public interface INeedChannelName { INeedPublish SetChannelName(string channelName); }
     public interface INeedPublish     { INeedStartTime SetPublish(string publish); }
     public interface INeedStartTime   { INeedThumbnail SetStartTime(string startTime); }
-    public interface INeedThumbnail   { RefactorBuilder SetThumbnailData(ThumbnailsData data); }
+    public interface INeedThumbnail   { RefactorBuilder SetThumbnailData(YtDataCollector.Scheme.ThumbnailsData data); }
 
     public sealed class RefactorBuilder : INeedTitle, INeedDescription, INeedVideoId, INeedChannelId, 
         INeedChannelName, INeedPublish, INeedStartTime, INeedThumbnail {
@@ -20,7 +20,7 @@ namespace YoutubeDatabaseController.Scheme.Builder {
         internal string ChannelName { get; private set; }
         internal string Publish     { get; private set; }
         internal string StartTime   { get; private set; }
-        internal ThumbnailsData Thumbnail { get; private set; }
+        internal YtDataCollector.Scheme.ThumbnailsData Thumbnail { get; private set; }
 
         private RefactorBuilder() { }
 
@@ -66,13 +66,13 @@ namespace YoutubeDatabaseController.Scheme.Builder {
             return this;
         }
 
-        public RefactorBuilder SetThumbnailData(ThumbnailsData data) {
+        public RefactorBuilder SetThumbnailData(YtDataCollector.Scheme.ThumbnailsData data) {
             this.Thumbnail = data;
             return this;
         }
 
-        public RefactorScheme Build() {
-            return new RefactorScheme(this);
+        public YtDataCollector.Scheme.RefactorScheme Build() {
+            return new YtDataCollector.Scheme.RefactorScheme(this);
         }
     }
 }

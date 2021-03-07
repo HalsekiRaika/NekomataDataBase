@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace YoutubeDatabaseController.Scheme {
+namespace YtDataCollector.Scheme {
     public partial class RefactorScheme {
         [JsonProperty("_id")]
         public string _id { get; set; }

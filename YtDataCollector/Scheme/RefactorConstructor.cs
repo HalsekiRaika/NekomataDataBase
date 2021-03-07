@@ -1,6 +1,6 @@
-﻿using YoutubeDatabaseController.Scheme.Builder;
+﻿using YtDataCollector.Scheme.Builder;
 
-namespace YoutubeDatabaseController.Scheme {
+namespace YtDataCollector.Scheme {
     public partial class RefactorScheme {
         public RefactorScheme(RefactorBuilder builder) {
             this._id         = builder._id;

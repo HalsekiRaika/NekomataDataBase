@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using YoutubeDatabaseController;
 using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
+using YtDataCollector.Scheme;
 using YtDataCollector.Scheme.LogScheme;
 using YtDataCollector.Util;
 using static YtDataCollector.Scheme.LogScheme.DefaultScheme;
