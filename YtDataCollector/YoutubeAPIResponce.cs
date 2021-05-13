@@ -8,11 +8,11 @@ using System.Web;
 using BaseDataCollector.Extension;
 using Log5RLibs.Services;
 using RetryExecutor;
-using YoutubeDatabaseController;
 using YtDataCollector.Scheme.LogScheme;
 
 namespace YtDataCollector {
     public static class YoutubeAPIResponce {
+#pragma warning disable 1998
         public static async Task<string> requestAsync(HttpClient client, string channelId) {
             Uri url = new Uri("https://www.googleapis.com/youtube/v3/search")
                 .AddQuery("part", "snippet")
@@ -21,8 +21,11 @@ namespace YtDataCollector {
                 .AddQuery("eventType", "upcoming")
                 .AddQuery("key", getToken());
             // AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, url.ToString().Substring(0, 129) + "[SECRET TOKEN]");
-            AlExtension.ColorizeWrite(DefaultScheme.REQUEST_SCHEME, $"情報をリクエスト ^: ^ChannelId [ ^{channelId, -16} ^] ^/ ",
+            // $"情報をリクエスト ^: ^ChannelId [ ^{channelId, -16} ^] ^/ "
+            AlExtension.ColorizeWrite(DefaultScheme.REQUEST_SCHEME, 
+                new []{ "情報をリクエスト ", ": ", "ChannelId [ ", $"{channelId, -16}", " ] ", "/ "},
                 new [] {ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.DarkGray});
+            //Console.WriteLine(url.ToString());
             string result = ReSpell.Execute(5, 5, 
                 () => client.GetStringAsync(url).Result, 
                 (c) => {
@@ -38,8 +41,8 @@ namespace YtDataCollector {
             Settings.UseQuota += 101;
             return result;
         }
-
         public static async Task<string> RequestStartTimeAsync(HttpClient client, string videoIds /*string[] videoId */) {
+#pragma warning restore 1998
             Uri url = new Uri("https://www.googleapis.com/youtube/v3/videos?")
                 .AddQuery("part", "liveStreamingDetails")
                 .AddQuery("key", getToken())
@@ -48,10 +51,7 @@ namespace YtDataCollector {
                 string res = ReSpell.Execute(5, 5, 
                 () => client.GetStringAsync(url).Result, 
                 (c) => AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"Retry Request... [ Count: {c}]"));
-            //foreach (string value in videoId) {
-            //    AlConsole.WriteLine(DefaultScheme.REQUEST_SCHEME, $"  #-- {value, 15}");
-            //}
-            Settings.UseQuota += 8;
+                Settings.UseQuota += 8;
             return res;
         }
 
@@ -70,7 +70,7 @@ namespace YtDataCollector {
             collection.Remove(key);
             collection.Add(key, value);
             UriBuilder builtUrl = new UriBuilder(uri) {
-                Query = collection.ToString(),
+                Query = collection.ToString()!,
             };
             return builtUrl.Uri;
         }
@@ -80,7 +80,7 @@ namespace YtDataCollector {
             collection.Remove(key);
             collection.Add(key, ArrayToString(valueArray));
             UriBuilder builtUrl = new UriBuilder(uri) {
-                Query = collection.ToString(),
+                Query = collection.ToString()!,
             };
             return builtUrl.Uri;
         }

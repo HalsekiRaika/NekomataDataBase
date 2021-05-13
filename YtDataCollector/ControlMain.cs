@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BaseDataCollector.Config;
 using BaseDataCollector.Extension;
 using Log5RLibs.Services;
 using MongoDB.Driver;
 using Newtonsoft.Json;
-using YoutubeDatabaseController;
-using YoutubeDatabaseController.List;
 using YoutubeDatabaseController.Scheme;
+using YtDataCollector.List;
 using YtDataCollector.Scheme;
 using YtDataCollector.Scheme.LogScheme;
 using YtDataCollector.Util;
@@ -76,10 +76,12 @@ namespace YtDataCollector {
                 string startTime = Task.Run(() => YoutubeAPIResponce.RequestStartTimeAsync(httpClient, requestIds)).Result;
                 for (int i = 0; i < (sliced.Length % 50 > 0 ? sliced.Length / 50 + 1 : sliced.Length / 50); i++) {
                     for (int j = 0; j < 5; j++) {
-                        AlExtension.ColorizeWrite(REQUEST_SCHEME, $"  #-- ^[ ", new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
-                        AlExtension.ColorizeWrite(REQUEST_SCHEME, String.Join(", ", sliced.Take(5)), 
+                        AlExtension.ColorizeWrite(REQUEST_SCHEME, 
+                            new []{ $"  #-- ", "[ " }, 
+                            new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
+                        AlExtension.ColorizeWrite(REQUEST_SCHEME, new []{String.Join(", ", sliced.Take(5))}, 
                             new [] {ConsoleColor.Magenta}, false);
-                        AlExtension.ColorizeWriteLine(REQUEST_SCHEME, $" ]", new [] {ConsoleColor.Green}, false);
+                        AlExtension.ColorizeWriteLine(REQUEST_SCHEME, new []{ " ]" }, new [] {ConsoleColor.Green}, false);
                         sliced = sliced.Skip<string>(5).ToArray();
                     }
                 }
@@ -120,7 +122,7 @@ namespace YtDataCollector {
             AlConsole.WriteLine(SORTLOG_SCHEME, "既に終了していたライブ : 以下のものは挿入タスクから除外されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetFinishedLivesDict()) {
-                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, new []{ "[ ", $"{liveData.Key}", " ] => \"", $"{liveData.Value}", "\"" },
                     new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
             
@@ -132,7 +134,7 @@ namespace YtDataCollector {
             AlConsole.WriteLine(SORTLOG_SCHEME, "フリーチャット専用枠 : 以下のものは挿入タスクから除外されます。");
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetFreeChatLivesDict()) {
-                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, new []{ "[ ", $"{liveData.Key}", " ] => \"", $"{liveData.Value}", "\"" },
                     new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
             }
 
@@ -143,7 +145,7 @@ namespace YtDataCollector {
             AlConsole.WriteLine(SORTLOG_SCHEME, "----------------------------- 対象 -----------------------------");
             if (SchemeOrthopedy.GetLazyLivesDict().Count != 0) {
                 foreach (KeyValuePair<string, string> liveData in SchemeOrthopedy.GetLazyLivesDict()) {
-                    AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, $"[ ^{liveData.Key} ^] => \"^{liveData.Value}^\"",
+                    AlExtension.ColorizeWriteLine(SORTLOG_SCHEME, new []{ "[ ", $"{liveData.Key}", " ] => \"", $"{liveData.Value}", "\"" },
                         new [] {ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Gray, ConsoleColor.Green});
                 }
             } else {
@@ -180,6 +182,8 @@ namespace YtDataCollector {
             AlConsole.WriteLine(CONTROLLER, "Have a good live broadcast today !");
 
             if (Settings.OutputFreeChatVideoId) { Console.WriteLine(free); }
+            
+            Console.CursorVisible = true;
         }
     }
 }

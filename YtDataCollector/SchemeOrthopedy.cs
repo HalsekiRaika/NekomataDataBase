@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using BaseDataCollector.Extension;
-using YoutubeDatabaseController;
+using BaseDataCollector.Structure.Builder;
 using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme;
-using YtDataCollector.Scheme.Builder;
 using YtDataCollector.Scheme.LogScheme;
 using YtDataCollector.Util;
-using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
+using RefactorScheme = BaseDataCollector.Structure.RefactorScheme;
 
 namespace YtDataCollector {
     public static class SchemeOrthopedy {
@@ -38,7 +37,8 @@ namespace YtDataCollector {
                 }
                 
                 AlExtension.ColorizeWrite(
-                    DefaultScheme.CONTROLLER, $"({count+1, 3}/{bundleScheme.Count}) ^[ ^{itemValue.Key.Id.VideoId} ^] キューに追加しています / ",
+                    DefaultScheme.CONTROLLER, 
+                    new []{ $"({count+1, 3}/{bundleScheme.Count}) ", "[ ", $"{itemValue.Key.Id.VideoId}", " ] キューに追加しています / " },
                     new [] {ConsoleColor.White, ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Green});
                 RefactorScheme refactorScheme = RefactorBuilder.Define
                     .SetTitle(item.Snippet.Title)

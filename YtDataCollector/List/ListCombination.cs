@@ -5,7 +5,7 @@ using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme;
 using YtDataCollector.Scheme.LogScheme;
 
-namespace YoutubeDatabaseController.List {
+namespace YtDataCollector.List {
     public static class ListCombination {
         /// <summary>
         /// @Deprecated

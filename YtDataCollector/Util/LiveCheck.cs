@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using YoutubeDatabaseController;
 using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme;
-using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
+using RefactorScheme = BaseDataCollector.Structure.RefactorScheme;
 
 namespace YtDataCollector.Util {
     public static class LiveCheck {

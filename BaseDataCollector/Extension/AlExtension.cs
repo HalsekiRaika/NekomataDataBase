@@ -12,18 +12,20 @@ namespace BaseDataCollector.Extension {
             }
         }
 
-        public static void ColorizeWriteLine(AlCConfigScheme preset, string message, ConsoleColor[] colors, bool isAlConsole = true) {
+        public static void ColorizeWriteLine(AlCConfigScheme preset, string[] message, ConsoleColor[] colors, bool isAlConsole = true) {
             ColorizeWrite(preset, message, colors, isAlConsole);
             Console.WriteLine();
         }
         
-        public static void ColorizeWrite(AlCConfigScheme preset, string message, ConsoleColor[] colors, bool isAlConsole = true) {
+        public static void ColorizeWrite(AlCConfigScheme preset, string[] message, ConsoleColor[] colors, bool isAlConsole = true) {
             if (isAlConsole) { AlConsole.Write(preset, ""); }
-            string[] disParsedMessage = message.Split("^");
-            for (int i = 0; i < disParsedMessage.Length; i++) {
+            if (message.Length != colors.Length) { throw new ArgumentException(); }
+            
+            for (int i = 0; i < message.Length; i++) {
                 Console.ForegroundColor = colors[i];
-                Console.Write(disParsedMessage[i]);
+                Console.Write(message[i]);
             }
+            
             Console.ResetColor();
         }
     }

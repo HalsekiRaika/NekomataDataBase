@@ -2,7 +2,7 @@
 using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme;
 
-namespace YoutubeDatabaseController.List {
+namespace YtDataCollector.List {
     public static class ListAggregation {
         // List
         private static List<string> _listResult     = new List<string>();

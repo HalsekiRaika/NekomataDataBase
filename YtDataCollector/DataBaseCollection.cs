@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using BaseDataCollector.Config;
 using BaseDataCollector.Extension;
 using Log5RLibs.Services;
 using MongoDB.Driver;
-using YoutubeDatabaseController;
-using YoutubeDatabaseController.Scheme;
 using YtDataCollector.Scheme.LogScheme;
-using RefactorScheme = YtDataCollector.Scheme.RefactorScheme;
+using RefactorScheme = BaseDataCollector.Structure.RefactorScheme;
 
 namespace YtDataCollector {
     public static class DataBaseCollection {
@@ -15,7 +14,8 @@ namespace YtDataCollector {
             AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"初期化を開始します。");
 
             foreach (KeyValuePair<IMongoDatabase, Dictionary<string, IMongoCollection<RefactorScheme>>> collection in LoadedComponent.GetAllCollections()) {
-                AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┏ ^DataBase  ^: ^{collection.Key.DatabaseNamespace.DatabaseName}",
+                AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, 
+                    new []{$" ┏ ", "DataBase ", ": ", $"{collection.Key.DatabaseNamespace.DatabaseName}"},
                     new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.DarkGray, ConsoleColor.Magenta});
                 // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┏ DataBase  : {collection.Key.DatabaseNamespace.DatabaseName}");
                 foreach (KeyValuePair<string, IMongoCollection<RefactorScheme>> collectionDict in collection.Value) {
@@ -23,7 +23,7 @@ namespace YtDataCollector {
                 }
             }
 
-            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┗ ^全ての初期化が終了しました。", 
+            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, new []{ $" ┗ ", "全ての初期化が終了しました。" }, 
                 new [] {ConsoleColor.DarkGray, ConsoleColor.Green});
             
             // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┗ 全ての初期化が終了しました。");
@@ -59,12 +59,12 @@ namespace YtDataCollector {
         }
 
         private static void Initialization(IMongoDatabase db, string targetCollection) {
-            AlExtension.ColorizeWrite(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ ^Init Collection: ^{targetCollection, -26} ", 
-                new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Green});
+            AlExtension.ColorizeWrite(DefaultScheme.DB_INITIALIZE_SCHEME, new []{ " ┣ ", "Init Collection: ", $"{targetCollection, -26} " }, 
+                new [] {ConsoleColor.DarkGray, ConsoleColor.Green, ConsoleColor.Cyan});
             // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┣ Init Collection: {targetCollection}");
             db.DropCollection(targetCollection);
-            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $"/ ^初期化しました。", 
-                new [] {ConsoleColor.DarkGray, ConsoleColor.DarkBlue, ConsoleColor.DarkGreen}, false);
+            AlExtension.ColorizeWriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, new []{ "/ ", "初期化しました。" }, 
+                new [] {ConsoleColor.DarkGray, ConsoleColor.DarkBlue}, false);
             // AlConsole.WriteLine(DefaultScheme.DB_INITIALIZE_SCHEME, $" ┃  ┗ 初期化しました。");
         }
 
